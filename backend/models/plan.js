@@ -26,6 +26,14 @@ const planSchema = new mongoose.Schema({
   },
 });
 
+planSchema.set('toJSON', {
+  transform: (document, returnedObject) => {
+    returnedObject.id = returnedObject._id.toString();
+    delete returnedObject._id;
+    delete returnedObject.__v;
+  },
+});
+
 const Plan = mongoose.model('Plan', planSchema);
 
 module.exports = Plan;
