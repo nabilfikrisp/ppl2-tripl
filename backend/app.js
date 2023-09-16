@@ -13,7 +13,7 @@ const mongoUrl = config.MONGODB_URI;
 mongoose
   .connect(mongoUrl)
   .then(() => {
-    logger.info(`connected to mongoose`);
+    logger.info('connected to mongoose');
   })
   .catch((error) => logger.error(error));
 
