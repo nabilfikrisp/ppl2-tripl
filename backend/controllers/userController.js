@@ -2,12 +2,19 @@ const bcrypt = require('bcryptjs');
 const User = require('../models/user');
 
 const getAll = async (request, response) => {
-  try {
-    const users = await User.find({});
-    return response.json(users);
-  } catch (error) {
-    return response.status(400).json({ error: `${error}` });
+  const { includePlans } = request.query;
+  const users = User.find({});
+  if (includePlans) {
+    users.populate('plans', {
+      title: 1,
+      description: 1,
+      id: 1,
+      date: 1,
+      locations: 1,
+    });
   }
+  const getUsers = await users.exec();
+  return response.json(getUsers);
 };
 
 const detail = async (request, response) => {
