@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const { userExtractor } = require('../utils/middleware');
 const authRouter = require('./authRoutes');
+const planRouter = require('./planRoutes');
 const userRouter = require('./userRoutes');
 
 router.get('/', (requrest, response) => {
@@ -15,7 +16,8 @@ router.post('/api/token', userExtractor, (request, response) => {
   response.json('jsonwebtoken work!');
 });
 
-router.use('/api', authRouter);
+router.use('/api/auth', authRouter);
 router.use('/api/users', userRouter);
+router.use('/api/plans', planRouter);
 
 module.exports = router;

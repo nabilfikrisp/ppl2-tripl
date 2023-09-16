@@ -55,9 +55,12 @@ const register = async (request, response) => {
     passwordHash,
   });
 
-  const savedUser = await user.save();
-
-  return response.status(201).json(savedUser);
+  try {
+    const savedUser = await user.save();
+    return response.status(201).json(savedUser);
+  } catch (error) {
+    return response.status(400).json({ error: `${error}` });
+  }
 };
 
 module.exports = { login, register };
