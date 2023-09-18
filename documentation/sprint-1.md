@@ -1,7 +1,7 @@
 # Sprint 1
 
 
-|Date|18 September 2023|
+|Date|11 September 2023|
 | :- | :- |
 |Created by|Laura Azra Aprilyanti|
 |Participant|Aulia Rahmanita, Anna Safira Dila, Laura Azra Aprilyanti, Muhammad Nabil Fikri|
