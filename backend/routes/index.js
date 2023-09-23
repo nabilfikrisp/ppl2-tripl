@@ -20,6 +20,6 @@ router.post('/api/token', userExtractor, (request, response) => {
 router.use('/api/auth', authRouter);
 router.use('/api/users', userRouter);
 router.use('/api/plans', planRouter);
-router.use('/api/public/places', placeApiRouter);
+// router.use('/api/public/places', placeApiRouter);
 
 module.exports = router;
