@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const { userExtractor } = require('../utils/middleware');
 const authRouter = require('./authRoutes');
+const placeApiRouter = require('./placeApiRoutes');
 const planRouter = require('./planRoutes');
 const userRouter = require('./userRoutes');
 
@@ -19,5 +20,6 @@ router.post('/api/token', userExtractor, (request, response) => {
 router.use('/api/auth', authRouter);
 router.use('/api/users', userRouter);
 router.use('/api/plans', planRouter);
+// router.use('/api/public/places', placeApiRouter);
 
 module.exports = router;
