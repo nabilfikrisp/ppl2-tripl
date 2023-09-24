@@ -1,14 +1,16 @@
-import "./App.css";
 import React from "react";
-import { Button } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
+import BrandingSection from "./components/landing-page/BrandingSection";
+import ExploreSection from "./components/landing-page/ExploreSection";
+import PlannerSection from "./components/landing-page/PlannerSection";
 
 function App() {
-  console.log("abec");
-
   return (
-    <>
-      <Button colorScheme="blue">Button</Button>
-    </>
+    <Box width="full">
+      <BrandingSection />
+      <ExploreSection />
+      <PlannerSection />
+    </Box>
   );
 }
 
