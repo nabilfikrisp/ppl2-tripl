@@ -1,6 +1,16 @@
-import { Flex, Button, HStack, chakra, Text } from "@chakra-ui/react";
+import {
+  Flex,
+  Button,
+  HStack,
+  Text,
+  Box,
+  useBoolean,
+  VStack,
+  StackDivider,
+} from "@chakra-ui/react";
 import { Link, NavLink } from "react-router-dom";
 import React from "react";
+import { CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
 
 const data = [
   {
@@ -14,8 +24,10 @@ const data = [
 ];
 
 export default function Header() {
+  const [isDrawerOpen, setIsDrawerOpen] = useBoolean(false);
+
   return (
-    <chakra.header id="header">
+    <Box as="nav" id="header" position="sticky" top="0" left="0" zIndex="99">
       <Flex
         w="100%"
         px="6"
@@ -44,7 +56,7 @@ export default function Header() {
           </Text>
         </Link>
 
-        <HStack as="nav" spacing="5">
+        <HStack as="nav" spacing="5" display={{ base: "none", md: "flex" }}>
           {data.map((item, i) => (
             <NavLink key={i} to={item.href}>
               <Button
@@ -91,7 +103,83 @@ export default function Header() {
             Sign Up
           </Button>
         </HStack>
+        <Box
+          display={{ base: "block", md: "none" }}
+          height="full"
+          position="relative"
+        >
+          <Box
+            _hover={{ cursor: "pointer" }}
+            onClick={setIsDrawerOpen.toggle}
+            position="relative"
+            width={6}
+            height={6}
+          >
+            <HamburgerIcon
+              boxSize={6}
+              style={{
+                position: "absolute",
+                zIndex: 1,
+                top: "0",
+                right: "0",
+                bottom: "0",
+                left: "0",
+                opacity: isDrawerOpen ? "0" : "1",
+                transition: "all .2s",
+                visibility: isDrawerOpen ? "hidden" : "visible",
+              }}
+            />
+            <CloseIcon
+              boxSize={5}
+              style={{
+                position: "absolute",
+                zIndex: 1,
+                top: "0",
+                right: "0",
+                bottom: "0",
+                left: "0",
+                opacity: !isDrawerOpen ? "0" : "1",
+                transition: "all .2s",
+                visibility: !isDrawerOpen ? "hidden" : "visible",
+              }}
+            />
+          </Box>
+          <VStack
+            style={{
+              position: "absolute",
+              right: "0",
+              top: isDrawerOpen ? "60px" : "-200px",
+              transition: "all .2s",
+            }}
+            bgColor="tripl.green-200"
+            pt={5}
+            pb={3}
+            px={8}
+            width="200px"
+            borderBottomRadius={10}
+            boxShadow="xl"
+            divider={<StackDivider borderColor="tripl.dark" />}
+          >
+            {data.map((item, i) => (
+              <NavLink key={i} to={item.href}>
+                <Button
+                  variant="nav"
+                  fontWeight="700"
+                  transitionDuration="0.2s"
+                  transitionTimingFunction="ease-in-out"
+                  _hover={{
+                    transform: "translateY(10%)",
+                    transitionDuration: "0.2s",
+                    transitionTimingFunction: "ease-in-out",
+                  }}
+                >
+                  {item.label}
+                </Button>
+              </NavLink>
+            ))}
+          </VStack>
+        </Box>
       </Flex>
-    </chakra.header>
+    </Box>
   );
 }
