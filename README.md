@@ -1,8 +1,8 @@
-# Proyek Perangkat Lunak II - Anak Rantau
+# Proyek Perangkat Lunak II - TRIPL
 
 ## Deskripsi Aplikasi
 
-Aplikasi untuk anak rantau di jatinangor
+Aplikasi untuk mencari destinasi di Kota Bandung dan membuat rencana perjalanan
 
 ## Anggota Kelompok
 
