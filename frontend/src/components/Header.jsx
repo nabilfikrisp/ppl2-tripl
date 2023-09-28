@@ -74,34 +74,39 @@ export default function Header() {
               </Button>
             </NavLink>
           ))}
-          <Button
-            bgColor="tripl.dark"
-            color="tripl.light"
-            transitionDuration="0.2s"
-            boxShadow="lg"
-            transitionTimingFunction="ease-in-out"
-            _hover={{
-              transform: "translateY(10%)",
-              transitionDuration: "0.2s",
-              transitionTimingFunction: "ease-in-out",
-            }}
-          >
-            Sign In
-          </Button>
-          <Button
-            bgColor="tripl.green-100"
-            color="tripl.dark"
-            boxShadow="lg"
-            transitionDuration="0.2s"
-            transitionTimingFunction="ease-in-out"
-            _hover={{
-              transform: "translateY(10%)",
-              transitionDuration: "0.2s",
-              transitionTimingFunction: "ease-in-out",
-            }}
-          >
-            Sign Up
-          </Button>
+          <Link to={"/sign-in"}>
+            <Button
+              bgColor="tripl.dark"
+              color="tripl.light"
+              transitionDuration="0.2s"
+              boxShadow="lg"
+              transitionTimingFunction="ease-in-out"
+              _hover={{
+                transform: "translateY(10%)",
+                transitionDuration: "0.2s",
+                transitionTimingFunction: "ease-in-out",
+              }}
+            >
+              Sign In
+            </Button>
+          </Link>
+
+          <Link to={"/sign-up"}>
+            <Button
+              bgColor="tripl.green-100"
+              color="tripl.dark"
+              boxShadow="lg"
+              transitionDuration="0.2s"
+              transitionTimingFunction="ease-in-out"
+              _hover={{
+                transform: "translateY(10%)",
+                transitionDuration: "0.2s",
+                transitionTimingFunction: "ease-in-out",
+              }}
+            >
+              Sign Up
+            </Button>
+          </Link>
         </HStack>
         <Box
           display={{ base: "block", md: "none" }}
@@ -148,7 +153,7 @@ export default function Header() {
             style={{
               position: "absolute",
               right: "0",
-              top: isDrawerOpen ? "60px" : "-200px",
+              top: isDrawerOpen ? "60px" : "-1000px",
               transition: "all .2s",
             }}
             bgColor="tripl.green-200"
@@ -177,6 +182,36 @@ export default function Header() {
                 </Button>
               </NavLink>
             ))}
+            <Link to={"/sign-in"}>
+              <Button
+                variant="nav"
+                transitionDuration="0.2s"
+                fontWeight="700"
+                transitionTimingFunction="ease-in-out"
+                _hover={{
+                  transform: "translateY(10%)",
+                  transitionDuration: "0.2s",
+                  transitionTimingFunction: "ease-in-out",
+                }}
+              >
+                Sign In
+              </Button>
+            </Link>
+            <Link to={"/sign-up"}>
+              <Button
+                variant="nav"
+                transitionDuration="0.2s"
+                fontWeight="700"
+                transitionTimingFunction="ease-in-out"
+                _hover={{
+                  transform: "translateY(10%)",
+                  transitionDuration: "0.2s",
+                  transitionTimingFunction: "ease-in-out",
+                }}
+              >
+                Sign Up
+              </Button>
+            </Link>
           </VStack>
         </Box>
       </Flex>

@@ -12,13 +12,16 @@ import Test from "./routes/Test.jsx";
 import "./global.css";
 import theme from "./theme.jsx";
 import Home from "./routes/Home.jsx";
+import SignIn from "./routes/SignIn.jsx";
+import SignUp from "./routes/SignUp.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route element={<RootLayout />}>
       <Route index element={<Home />} />
       <Route path="about" element={<Test />} />
-      {/* ... etc. */}
+      <Route path="sign-in" element={<SignIn />} />
+      <Route path="sign-up" element={<SignUp />} />
     </Route>
   )
 );
