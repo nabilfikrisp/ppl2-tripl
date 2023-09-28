@@ -12,6 +12,7 @@ const RootLayout = () => {
       flexDir="column"
       justifyContent="space-between"
       backgroundColor="tripl.green-100"
+      overflowY="auto"
     >
       <Header />
       <Box flexGrow={1}>

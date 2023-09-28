@@ -62,6 +62,7 @@ const SignUp = () => {
       paddingY="80px"
       paddingX="40px"
       gridTemplateColumns={{ base: "1fr", xl: "repeat(2,1fr)" }}
+      gap="40px"
     >
       <GridItem paddingX={{ lg: 20 }}>
         <Box
