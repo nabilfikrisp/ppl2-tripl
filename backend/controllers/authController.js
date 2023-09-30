@@ -40,6 +40,11 @@ const register = async (request, response) => {
     return response.status(400).json('invalid email format');
   }
 
+  const duplicateEmail = await User.find({ email });
+  if (duplicateEmail.length) {
+    return response.status(400).json('email already registered');
+  }
+
   if (password.length < 3) {
     return response
       .status(400)
