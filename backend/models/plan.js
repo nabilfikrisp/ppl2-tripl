@@ -12,8 +12,21 @@ const planSchema = new mongoose.Schema({
   },
   locations: [
     {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Location',
+      location: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Location',
+        required: [
+          true,
+          'location is required and time range must be included',
+        ],
+      },
+      timeRange: {
+        type: String,
+        required: [
+          true,
+          'time range is required and location must be included',
+        ],
+      },
     },
   ],
   creator: {
