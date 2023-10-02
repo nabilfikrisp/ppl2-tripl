@@ -42,6 +42,43 @@ const detail = async (request, response) => {
   return response.json(plan);
 };
 
+const update = async (request, response) => {
+  const { id } = request.params;
+  const { date, title, description, locations } = request.body;
+  const user = request.user;
+  const oldPlan = await Plan.findById(id);
+
+  if (user.id !== oldPlan.creator.toString()) {
+    return response.json(401).end();
+  }
+
+  const updatePlan = Plan.findByIdAndUpdate(
+    id,
+    { date, title, description, locations },
+    {
+      new: true,
+      runValidators: true,
+      context: 'query',
+    }
+  );
+
+  if (!updatePlan) {
+    return response.status(400).end();
+  }
+
+  updatePlan.populate({
+    path: 'creator',
+    select: 'name email',
+  });
+  updatePlan.populate({
+    path: 'locations.location',
+  });
+
+  const updatedPlan = await updatePlan.exec();
+
+  return response.json(updatedPlan);
+};
+
 const save = async (request, response) => {
   const { date, title, description, locations } = request.body;
   const user = request.user;
@@ -69,4 +106,4 @@ const save = async (request, response) => {
   return response.status(201).json(savedPlan);
 };
 
-module.exports = { getAll, detail, save, myPlan };
+module.exports = { getAll, detail, save, myPlan, update };
