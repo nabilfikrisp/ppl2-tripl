@@ -194,7 +194,7 @@ export default function Header() {
                   transitionTimingFunction: "ease-in-out",
                 }}
               >
-                Sign In
+                Login
               </Button>
             </Link>
             <Link to={"/sign-up"}>
