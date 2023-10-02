@@ -11,7 +11,7 @@ const Footer = () => {
         backgroundColor="tripl.dark "
         textColor="tripl.green-100"
       >
-        <Text fontWeight={600}>Ini Footer</Text>
+        <Text fontWeight={600}>Ini Footer 3</Text>
       </Flex>
     </chakra.footer>
   );
