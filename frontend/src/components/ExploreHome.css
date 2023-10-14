@@ -1,0 +1,124 @@
+/* Style for the card container */
+
+.header-title{
+  color : #DD6E42;
+  font-size: 35px;
+}
+
+a {
+  text-decoration: none; 
+  display: inline-block; 
+  color : #3C474B;
+}
+
+.card {
+  display: flex; /* Use flexbox to create side-by-side layout */
+  align-items: center; /* Center vertically */
+  border: 1px solid #ddd; /* Border for the card */
+  padding: 20px; /* Add some padding */
+  width: 700px; /* Adjust the maximum width as needed */
+  height: 200px;
+  margin: 0 auto; /* Center the card horizontally */
+  margin-top: 50px;
+  border-radius: 30px;
+  background-color: #E8DAB2;
+ color : #3C474B;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a shadow for depth */
+}
+
+.card-add {
+  display: flex; /* Use flexbox to create side-by-side layout */
+  align-items: center; /* Center vertically */
+  border: 1px solid #ddd; /* Border for the card */
+  padding: 20px; /* Add some padding */
+  width: 700px; /* Adjust the maximum width as needed */
+  height: 200px;
+  margin: 0 auto; /* Center the card horizontally */
+  margin-top: 50px;
+  border-radius: 30px;
+  background-color: rgba(60, 71, 75, 0.25);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a shadow for depth */
+}
+
+/* Style for the card image */
+.card-image {
+  width: 150px; /* Adjust the image width as needed */
+  height: auto; /* Automatically adjust the height */
+  margin-right: 20px; /* Spacing between image and content */
+}
+
+/* Style for the card content */
+.card-content {
+  flex: 1; /* Allow content to grow and take remaining space */
+}
+
+/* Style for card title */
+.card-title {
+  font-size: 1.5rem; /* Adjust the font size as needed */
+  margin: 0; /* Remove default margin */
+  text-align: left;
+  margin-bottom: 10px; /* Add spacing below title */
+}
+
+/* Style for card text */
+.card-text {
+  margin: 0; /* Remove default margin */
+  text-align: left;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande',
+      'Lucida Sans', Arial, sans-serif;
+}
+.btn-switch{
+  display : flex;
+  /* margin-left : 10px; */
+  margin-top : 20px;
+}
+
+.btn-add{
+  display : flex;
+  /* margin-left : 10px; */
+  margin-top : 20px;
+}
+
+.btn-switch .btn--category{
+  /* display : flex; */
+  /* margin-left : 35px; */
+  border: none; /* Remove button border */
+  margin-right: 60px; /* Right margin to create space between buttons */
+  cursor: pointer;
+}
+
+/* .btn-switch  .last-btn {
+  margin-right: 0px;
+  background-color: red;
+} */
+
+/* Style for the navigator container */
+.navigator {
+  font-size: 15px; /* Adjust the font size as needed */
+  /* margin-bottom: 30px; */
+  margin-top: 30px;
+  margin-left : 13%;
+
+}
+
+/* Style for the separator (>) */
+.separator {
+  color : #3C474B;
+  margin: 0 5px; /* Add spacing around the separator */
+}
+
+/* Style for the navigation links */
+.nav-link-1 {
+  text-decoration: none; /* Remove underline on links */
+  color: #3C474B; /* Link color */
+  /* font-weight: bold;  */
+  /* Optional: Make the links bold */
+}
+
+.nav-link-2 {
+  text-decoration: none; /* Remove underline on links */
+  color: #DD6E42; /* Link color */
+}
+
+
+

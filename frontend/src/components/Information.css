@@ -1,0 +1,109 @@
+.image {
+    background-image: url('./assets/images/img-2.jpg');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    color: red;
+    font-size: 20px;
+
+  }
+
+  .hero-content {
+    /* background: url('../assets/images/img-2.jpg') center center/cover no-repeat; */
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, 0.2);
+    object-fit: contain;
+  }
+  
+  .hero-slideshow {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    /* max-width: 100%; */
+    overflow: hidden;
+  }
+  
+  .hero-slideshow img {
+    width: 100%;
+    height: 100vh;
+    /* height: auto; */
+    display: block;
+  }
+  
+  .prev-button,
+  .next-button {
+    position: absolute;
+    top: 60%;
+    transform: translateY(-50%);
+    background: none;
+    text-shadow: 1px 1px 2px black;
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 20px 20px;
+    font-size: 45px;
+  }
+  
+  .prev-button {
+    left: 15px;
+  }
+  
+  .next-button {
+    right: 15px;
+  }
+
+  .hero-content > h1 {
+    color: #fff;
+    text-shadow: 1px 1px 2px black;
+    font-size: 40px;
+    margin-top: 400px;
+    margin-bottom: 40px;
+    /* margin-left: -200px; */
+    text-align: center;
+  }
+  
+  .hero-content > p {
+    margin-top: 8px;
+    margin-left: -200px;
+    color: #fff;
+    font-size: 20px;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande',
+      'Lucida Sans', Arial, sans-serif;
+  }
+
+  .info-header{
+    margin-left: 100px;
+    margin-top : 30px;
+  }
+
+  .info-header h1{
+    font-size : 25px;
+    margin-top:10px;
+    text-align: left;
+    font-weight: bold;
+
+  }
+
+.info-tentang{
+  margin-right: 100px;
+  text-align: justify;
+}
+
+ 
+  .info-desc p{
+    
+    font-weight: lighter;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande',
+      'Lucida Sans', Arial, sans-serif;
+  }
+
+  .info-maps p{
+    
+    font-weight: lighter;
+    margin-bottom: 30px;
+  }
