@@ -14,6 +14,7 @@ import theme from "./theme.jsx";
 import Home from "./routes/Home.jsx";
 import SignIn from "./routes/SignIn.jsx";
 import SignUp from "./routes/SignUp.jsx";
+import Explore from "./routes/Explore.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -22,6 +23,10 @@ const router = createBrowserRouter(
       <Route path="about" element={<Test />} />
       <Route path="sign-in" element={<SignIn />} />
       <Route path="sign-up" element={<SignUp />} />
+      <Route path="explore">
+        <Route index element={<Explore />} />
+        <Route path=":id" element={<Explore />} />
+      </Route>
     </Route>
   )
 );

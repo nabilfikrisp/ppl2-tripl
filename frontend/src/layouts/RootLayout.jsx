@@ -11,7 +11,7 @@ const RootLayout = () => {
       as={Flex}
       flexDir="column"
       justifyContent="space-between"
-      backgroundColor="tripl.green-100"
+      backgroundColor="tripl-new.light"
       overflowY="auto"
     >
       <Header />

@@ -19,6 +19,15 @@ const colors = {
     "green-500": "#1a4236",
     dark: "#002c1f",
   },
+  "tripl-new": {
+    light: "#EAEAEA",
+    orange: "#DD6E42",
+    cream: "#E8DAB2",
+    "gray-200": "#4F6D7A",
+    "gray-100": "#C0D6DF",
+    "gray-300": "#3C474B",
+    black: "#162521",
+  },
 };
 
 const theme = extendTheme({
