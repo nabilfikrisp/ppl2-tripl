@@ -35,14 +35,14 @@ export default function Header() {
         minHeight="100px"
         align="center"
         justify="space-between"
-        backgroundColor="tripl.green-200"
+        backgroundColor="tripl-new.light"
         textColor="tripl.dark"
         boxShadow="lg"
       >
         <Link to="/">
           <Text
             fontWeight="1000"
-            color="tripl.dark"
+            color="tripl-new.orange"
             fontSize="32px"
             transitionDuration="0.2s"
             transitionTimingFunction="ease-in-out"
@@ -76,8 +76,8 @@ export default function Header() {
           ))}
           <Link to={"/sign-in"}>
             <Button
-              bgColor="tripl.dark"
-              color="tripl.light"
+              bgColor="tripl-new.orange"
+              color="tripl-new.light"
               transitionDuration="0.2s"
               boxShadow="lg"
               transitionTimingFunction="ease-in-out"
@@ -93,8 +93,9 @@ export default function Header() {
 
           <Link to={"/sign-up"}>
             <Button
-              bgColor="tripl.green-100"
-              color="tripl.dark"
+              border="1px solid"
+              bgColor="tripl-new.light"
+              color="tripl-new.orange"
               boxShadow="lg"
               transitionDuration="0.2s"
               transitionTimingFunction="ease-in-out"
