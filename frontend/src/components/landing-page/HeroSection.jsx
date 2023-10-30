@@ -18,7 +18,6 @@ const HeroSection = () => {
         flexDir="column"
         gap="40px"
         textAlign={{ base: "center", xl: "start" }}
-        paddingY="80px"
         paddingX="40px"
         justifyContent="center"
         alignItems="center"
@@ -52,8 +51,14 @@ const HeroSection = () => {
         justifyContent="center"
         display={{ base: "none", xl: "flex" }}
         overflow="hidden"
+        alignItems="center"
       >
-        <Image src="/home-hero.png" />
+        <Image
+          src="/home-hero.png"
+          w="full"
+          aspectRatio="4/3"
+          height="fit-content"
+        />
       </GridItem>
     </Grid>
   );
