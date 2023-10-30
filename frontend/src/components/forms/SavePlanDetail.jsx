@@ -6,7 +6,7 @@ const SavePlanDetail = () => {
   const location = useLocation();
 
   if (location.state === null) {
-    return <Navigate to="/planner" />;
+    return <Navigate state={{ openModal: true }} to="/planner" />;
   }
 
   console.log(location.state.data, "ASJDHASKD");

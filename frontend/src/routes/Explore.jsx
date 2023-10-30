@@ -1,8 +1,30 @@
 import { SearchIcon } from "@chakra-ui/icons";
 import { Box, Flex, Image, Input, Text } from "@chakra-ui/react";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { AiFillStar } from "react-icons/ai";
 
 const Explore = () => {
+  const [data, setData] = useState();
+  const [isLoading, setIsloading] = useState(true);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/api/locations", {
+        params: {
+          page: 1,
+          pageSize: 10,
+        },
+      })
+      .then((res) => {
+        setData(res.data);
+        setIsloading(false);
+      });
+  }, []);
+
+  if (isLoading) return <Box>Loading...</Box>;
+
+  console.log(data, "DATA");
   return (
     <Flex width="full" flexDir="column" minHeight="65vh" height="full">
       <Flex
@@ -94,93 +116,52 @@ const Explore = () => {
           </form>
         </Box>
         <Flex flexDir="column" justifyContent="center" gap="50px">
-          <Flex
-            flexDir={{ base: "column", md: "row" }}
-            borderRadius="50px"
-            overflow="hidden"
-            height={{ base: "fit-content", md: "250px" }}
-            w="full"
-          >
-            <Box minW="30%" height="full">
-              <Image src="/location-image-example.png" height="full" w="full" />
-            </Box>
+          {data.map((location) => (
             <Flex
-              flexGrow="1"
-              color="tripl-new.black"
-              bgColor="tripl-new.cream"
-              px="30px"
-              flexDir="column"
-              gap="20px"
-              justifyContent="center"
-              py="30px"
+              key={location.googleid}
+              flexDir={{ base: "column", md: "row" }}
+              borderRadius="50px"
+              overflow="hidden"
+              height={{ base: "fit-content", md: "250px" }}
+              w="full"
             >
-              <Text fontWeight="bold" fontSize="30px">
-                Pulau Padar - Padar Island, Nusa Tenggara Timur
-              </Text>
-              <Text>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-                vestibulum lectus eu eleifend tristique. Nulla facilisi.
-              </Text>
+              <Box minW="30%" maxW="30%" height="full" just>
+                <Image
+                  src={location.photo}
+                  height="full"
+                  w="full"
+                  fallbackSrc="auth-bg.svg"
+                  fallbackStrategy="onError"
+                  referrerPolicy="no-referrer"
+                  objectFit="cover"
+                  loading="lazy"
+                />
+              </Box>
+              <Flex
+                flexGrow="1"
+                color="tripl-new.black"
+                bgColor="tripl-new.cream"
+                px="30px"
+                flexDir="column"
+                gap="20px"
+                py="30px"
+              >
+                <Text fontWeight="bold" fontSize="30px">
+                  {location.name}
+                </Text>
+                <Flex alignItems="center" gap="4px">
+                  <AiFillStar />
+                  <Text fontSize="sm">{location.rating}</Text>
+                </Flex>
+                <Text fontSize="xs" fontWeight="medium" color="gray.500">
+                  ({location.reviewCount}) reviews
+                </Text>
+                <Text>
+                  {location.description || "No description about this place"}
+                </Text>
+              </Flex>
             </Flex>
-          </Flex>
-          <Flex
-            flexDir={{ base: "column", md: "row" }}
-            borderRadius="50px"
-            overflow="hidden"
-            height={{ base: "fit-content", md: "250px" }}
-            w="full"
-          >
-            <Box minW="30%" height="full">
-              <Image src="/location-image-example.png" height="full" w="full" />
-            </Box>
-            <Flex
-              flexGrow="1"
-              color="tripl-new.black"
-              bgColor="tripl-new.cream"
-              px="30px"
-              flexDir="column"
-              gap="20px"
-              justifyContent="center"
-              py="30px"
-            >
-              <Text fontWeight="bold" fontSize="30px">
-                Pulau Padar - Padar Island, Nusa Tenggara Timur
-              </Text>
-              <Text>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-                vestibulum lectus eu eleifend tristique. Nulla facilisi.
-              </Text>
-            </Flex>
-          </Flex>
-          <Flex
-            flexDir={{ base: "column", md: "row" }}
-            borderRadius="50px"
-            overflow="hidden"
-            height={{ base: "fit-content", md: "250px" }}
-            w="full"
-          >
-            <Box minW="30%" height="full">
-              <Image src="/location-image-example.png" height="full" w="full" />
-            </Box>
-            <Flex
-              flexGrow="1"
-              color="tripl-new.black"
-              bgColor="tripl-new.cream"
-              px="30px"
-              flexDir="column"
-              gap="20px"
-              justifyContent="center"
-              py="30px"
-            >
-              <Text fontWeight="bold" fontSize="30px">
-                Pulau Padar - Padar Island, Nusa Tenggara Timur
-              </Text>
-              <Text>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-                vestibulum lectus eu eleifend tristique. Nulla facilisi.
-              </Text>
-            </Flex>
-          </Flex>
+          ))}
         </Flex>
       </Flex>
     </Flex>

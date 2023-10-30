@@ -6,12 +6,19 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useEffect } from "react";
 import CreatePlanForm from "../components/forms/CreatePlanForm";
 import { SmallAddIcon } from "@chakra-ui/icons";
+import { useLocation } from "react-router-dom";
 
 const Planner = () => {
+  const location = useLocation();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  useEffect(() => {
+    if (location.state && location.state.openModal) {
+      onOpen();
+    }
+  }, []);
   return (
     <>
       <Box w="full" py="50px" px={{ base: "10px", md: "50px", xl: "200px" }}>
