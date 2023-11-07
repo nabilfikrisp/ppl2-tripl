@@ -2,7 +2,6 @@ const Location = require('../models/location');
 
 const getAll = async (request, response) => {
   const { type, page, pageSize, search } = request.query;
-
   try {
     let query = type ? Location.find({ type }) : Location.find({});
 
@@ -19,7 +18,7 @@ const getAll = async (request, response) => {
       query = query.skip(skipAmount).limit(Number(pageSize));
     }
 
-    if (pageSize) {
+    if (pageSize && page === undefined) {
       query = query.skip(0).limit(Number(pageSize));
     }
 
