@@ -19,6 +19,7 @@ import ExploreDetail from "./routes/ExploreDetail.jsx";
 import Planner from "./routes/Planner.jsx";
 import SavePlanDetail from "./components/forms/SavePlanDetail.jsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import "leaflet/dist/leaflet.css";
 
 const queryClient = new QueryClient();
 

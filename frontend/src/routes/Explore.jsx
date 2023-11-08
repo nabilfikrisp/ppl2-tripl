@@ -7,9 +7,9 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { ELocationType } from "../utils/helpers/location.helper";
 import { BASE_ENDPOINT } from "../api";
 import { debounce } from "lodash";
+import { Link } from "react-router-dom";
 
 const Explore = () => {
-  const maxPages = 20;
   const [filterConfig, setFilterConfig] = useState({
     page: 1,
     pageSize: 5,
@@ -37,11 +37,10 @@ const Explore = () => {
     queryFn: ({ pageParam }) => fetchLocations({ pageParam }),
     initialPageParam: 1,
     getNextPageParam: (_lastPage, pages) => {
-      if (pages.length < maxPages) {
-        return pages.length + 1;
-      } else {
+      if (pages[pages.length - 1].length === undefined) {
         return undefined;
       }
+      return pages.length + 1;
     },
   });
 
@@ -92,10 +91,10 @@ const Explore = () => {
               </Flex>
             </Flex>
             <Flex
-              gap={{ base: "10px", xl: "50px" }}
+              gap={{ base: "10px", xl: "20px" }}
               justifyContent={{ base: "start", md: "space-between" }}
               mt="30px"
-              flexWrap="wrap"
+              flexWrap={{ base: "wrap", md: "nowrap" }}
             >
               {[
                 { label: "Semua", value: undefined },
@@ -104,8 +103,9 @@ const Explore = () => {
                 { label: "Penginapan", value: ELocationType.HOTEL },
               ].map((type, idx) => (
                 <Box
-                  minW={{ md: "150px", xl: "200px" }}
-                  w={{ base: "45%", md: "fit-content" }}
+                  // minW={{ md: "150px", xl: "200px" }}
+                  w={{ base: "45%", md: "full" }}
+                  flexGrow="1"
                   py="10px"
                   bgColor={
                     filterConfig.type === type.value
@@ -137,16 +137,18 @@ const Explore = () => {
             <Flex flexDir="column" justifyContent="center" gap="50px">
               {data.pages.map((page, pageIndex) => (
                 <React.Fragment key={pageIndex}>
-                  {page.map((location, index) => (
+                  {page.map((location) => (
                     <Flex
+                      as={Link}
                       id="below"
-                      key={index}
+                      key={location.placeId}
                       flexDir={{ base: "column", md: "row" }}
                       borderRadius="50px"
                       overflow="hidden"
                       height={{ base: "600px", md: "300px" }}
                       w="full"
                       maxW="1000px"
+                      to={`${location.id}`}
                     >
                       <Box
                         minW="30%"
@@ -191,11 +193,11 @@ const Explore = () => {
                             </Text>
                           </Flex>
                           <Text
-                            fontSize="xs"
+                            fontSize="sm"
                             fontWeight="medium"
                             color="gray.500"
                           >
-                            ({location.reviewCount}) reviews
+                            {location.reviewCount} reviews
                           </Text>
                         </Flex>
                         <Text

@@ -31,13 +31,14 @@ const Planner = () => {
         >
           CATATAN PERJALANANMU
         </Text>
-        <Flex flexDir="column" gap="50px">
+        <Flex flexDir="column" gap="50px" alignItems="center">
           <Flex
             flexDir={{ base: "column", md: "row" }}
             borderRadius="50px"
             overflow="hidden"
             height={{ base: "fit-content", md: "250px" }}
             w="full"
+            maxW="1000px"
           >
             <Box minW="30%" height="full">
               <Image src="/location-image-example.png" height="full" w="full" />
@@ -68,6 +69,7 @@ const Planner = () => {
             overflow="hidden"
             height={{ base: "fit-content", md: "250px" }}
             w="full"
+            maxW="1000px"
           >
             <Box minW="30%" height="full">
               <Image
