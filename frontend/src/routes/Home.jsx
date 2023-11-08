@@ -5,7 +5,7 @@ import ProductSection from "../components/landing-page/ProductSection";
 
 const Home = () => {
   return (
-    <Flex width="full" flexDir="column" minHeight="65vh" height="full" gap={{ xl:"100px" }}>
+    <Flex width="full" flexDir="column" minHeight="65vh" height="full" gap={{ xl:"100px" }} pb="50px">
       <HeroSection />
       <ProductSection />
     </Flex>
