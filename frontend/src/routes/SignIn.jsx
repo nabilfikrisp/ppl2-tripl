@@ -21,8 +21,12 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
+import useAlert from "../components/hooks/useAlert";
+import { BASE_ENDPOINT } from "../api";
+import axios from "axios";
+import { useAuth } from "../components/hooks/useAuth";
 
 const signUpSchema = z.object({
   email: z.string().email(),
@@ -30,6 +34,9 @@ const signUpSchema = z.object({
 });
 
 const SignUp = () => {
+  const location = useLocation();
+  const { handleSuccess, handleError } = useAlert();
+  const { login } = useAuth();
   const {
     handleSubmit,
     register,
@@ -42,12 +49,24 @@ const SignUp = () => {
 
   const [show, setShow] = React.useState(false);
   const handleClick = () => setShow(!show);
+  const redirectPath = location.state?.path || "/";
 
-  const onSubmit = async (data) => {
-    console.log(data, "SUBMIT");
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    reset();
-    navigate("/sign-in");
+  const loginUser = async (params) => {
+    try {
+      const response = await axios.post(`${BASE_ENDPOINT}/auth/login`, params);
+      handleSuccess("Login success");
+      login(response.data);
+      reset();
+      navigate(redirectPath, { replace: true });
+      return response.data;
+    } catch (error) {
+      handleError(JSON.stringify(error.response.data.error));
+      return null;
+    }
+  };
+
+  const onSubmit = async (values) => {
+    loginUser(values);
   };
 
   return (

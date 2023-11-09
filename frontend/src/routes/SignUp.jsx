@@ -24,6 +24,9 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useNavigate } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
+import axios from "axios";
+import { BASE_ENDPOINT } from "../api";
+import useAlert from "../components/hooks/useAlert";
 
 const signUpSchema = z
   .object({
@@ -38,6 +41,7 @@ const signUpSchema = z
   });
 
 const SignUp = () => {
+  const { handleSuccess, handleError } = useAlert();
   const {
     handleSubmit,
     register,
@@ -51,11 +55,24 @@ const SignUp = () => {
   const [show, setShow] = React.useState(false);
   const handleClick = () => setShow(!show);
 
-  const onSubmit = async (data) => {
-    console.log(data, "SUBMIT");
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    reset();
-    navigate("/sign-in");
+  const registerUser = async (params) => {
+    try {
+      const response = await axios.post(
+        `${BASE_ENDPOINT}/auth/register`,
+        params
+      );
+      handleSuccess("We registered your account, you may login now :)");
+      reset();
+      navigate("/sign-in");
+      return response.data;
+    } catch (error) {
+      handleError(error.request.responseText);
+      return null;
+    }
+  };
+
+  const onSubmit = async (values) => {
+    registerUser(values);
   };
 
   return (
