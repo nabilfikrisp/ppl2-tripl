@@ -17,14 +17,17 @@ import SavePlanDetail from "./components/forms/SavePlanDetail";
 import Cookies from "js-cookie";
 import { useAuth } from "./components/hooks/useAuth";
 import IsLoggedIn from "./components/middleware/IsLoggedIn";
+import IsNotLoggedIn from "./components/middleware/IsNotLoggedIn";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route element={<RootLayout />}>
       <Route index element={<Home />} />
       <Route path="about" element={<Test />} />
-      <Route path="sign-in" element={<SignIn />} />
-      <Route path="sign-up" element={<SignUp />} />
+      <Route element={<IsNotLoggedIn />}>
+        <Route path="sign-in" element={<SignIn />} />
+        <Route path="sign-up" element={<SignUp />} />
+      </Route>
       <Route path="explore">
         <Route index element={<Explore />} />
         <Route path=":id" element={<ExploreDetail />} />

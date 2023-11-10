@@ -22,8 +22,8 @@ export const AuthContextProvider = ({ children }) => {
 
   const logout = () => {
     setUser(null);
-    Cookies.remove("user");
-    Cookies.remove("token");
+    Cookies.remove("user", { sameSite: "None" });
+    Cookies.remove("token", { sameSite: "None" });
   };
 
   return (
