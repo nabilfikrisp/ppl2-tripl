@@ -24,6 +24,11 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useNavigate } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
+import axios from "axios";
+import { BASE_ENDPOINT } from "../api";
+import useAlert from "../components/hooks/useAlert";
+import { useGoogleLogin } from "@react-oauth/google";
+import { useAuth } from "../components/hooks/useAuth";
 
 const signUpSchema = z
   .object({
@@ -38,6 +43,8 @@ const signUpSchema = z
   });
 
 const SignUp = () => {
+  const { login } = useAuth();
+  const { handleSuccess, handleError } = useAlert();
   const {
     handleSubmit,
     register,
@@ -50,12 +57,44 @@ const SignUp = () => {
 
   const [show, setShow] = React.useState(false);
   const handleClick = () => setShow(!show);
+  const redirectPath = location.state?.path || "/";
 
-  const onSubmit = async (data) => {
-    console.log(data, "SUBMIT");
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    reset();
-    navigate("/sign-in");
+  const registerUser = async (params) => {
+    try {
+      const response = await axios.post(
+        `${BASE_ENDPOINT}/auth/register`,
+        params
+      );
+      handleSuccess("We registered your account, you may login now :)");
+      reset();
+      navigate("/sign-in");
+      return response.data;
+    } catch (error) {
+      handleError(error.request.responseText);
+      return null;
+    }
+  };
+
+  const googleLogin = useGoogleLogin({
+    flow: "auth-code",
+    onSuccess: async (tokenResponse) => {
+      try {
+        const response = await axios.post(`${BASE_ENDPOINT}/auth/google`, {
+          code: tokenResponse.code,
+        });
+        handleSuccess("Login success");
+        login(response.data);
+        reset();
+        navigate(redirectPath, { replace: true });
+      } catch (error) {
+        handleError(JSON.stringify(error.response.data.error));
+        return null;
+      }
+    },
+  });
+
+  const onSubmit = async (values) => {
+    registerUser(values);
   };
 
   return (
@@ -236,35 +275,30 @@ const SignUp = () => {
                 <Text color="tripl-new.black">or</Text>
                 <Divider border="1px" borderRadius={"2xl"} />
               </HStack>
-              <ChakraLink
-                as={Link}
-                to="/google/sign-in"
+              <Button
                 color="tripl-new.orange"
+                bgColor="tripl-new.light"
+                border="1px solid"
+                boxShadow="lg"
+                transitionDuration="0.2s"
+                transitionTimingFunction="ease-in-out"
+                _hover={{
+                  transform: "translateY(10%)",
+                  transitionDuration: "0.2s",
+                  transitionTimingFunction: "ease-in-out",
+                }}
+                borderRadius="50px"
                 w="full"
+                isLoading={isSubmitting}
+                onClick={() => {
+                  googleLogin();
+                }}
               >
-                <Button
-                  color="tripl-new.orange"
-                  bgColor="tripl-new.light"
-                  border="1px solid"
-                  boxShadow="lg"
-                  transitionDuration="0.2s"
-                  transitionTimingFunction="ease-in-out"
-                  _hover={{
-                    transform: "translateY(10%)",
-                    transitionDuration: "0.2s",
-                    transitionTimingFunction: "ease-in-out",
-                  }}
-                  borderRadius="50px"
-                  w="full"
-                  isLoading={isSubmitting}
-                  type="submit"
-                >
-                  <Box as="span" me="10px">
-                    <FcGoogle />
-                  </Box>
-                  Sign Up with Google
-                </Button>
-              </ChakraLink>
+                <Box as="span" me="10px">
+                  <FcGoogle />
+                </Box>
+                Sign In with Google
+              </Button>
             </VStack>
           </form>
         </Box>

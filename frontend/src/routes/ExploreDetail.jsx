@@ -65,7 +65,11 @@ const ExploreDetail = () => {
               h={{ base: "fit-content", md: "full" }}
             />
           </Flex>
-          <Flex flexDir="column" gap="50px" px="150px">
+          <Flex
+            flexDir="column"
+            gap="50px"
+            px={{ base: "10px", md: "50px", lg: "150px" }}
+          >
             <Flex flexDir="column">
               <Text
                 fontSize="48px"
@@ -135,7 +139,11 @@ const ExploreDetail = () => {
               <Text fontSize="24px" fontWeight="bold" mb="20px">
                 Telusuri Maps
               </Text>
-              <Box height="600px" overflow="hidden" borderRadius="20px">
+              <Box
+                height={{ base: "300px", sm: "450px", md:"600px" }}
+                overflow="hidden"
+                borderRadius="20px"
+              >
                 <MapContainer
                   center={{ lat: data.latitude, lng: data.longitude }}
                   zoom={20}
