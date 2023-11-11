@@ -31,6 +31,26 @@ const Planner = () => {
         >
           CATATAN PERJALANANMU
         </Text>
+        <Flex justifyContent="center" align="center" w="full" mb="50px">
+          <Button
+            bgColor="tripl-new.orange"
+            color="tripl-new.light"
+            px="100px"
+            py="10px"
+            borderRadius="50px"
+            transitionDuration="0.2s"
+            transitionTimingFunction="ease-in-out"
+            _hover={{
+              transform: "translateY(10%)",
+              transitionDuration: "0.2s",
+              transitionTimingFunction: "ease-in-out",
+            }}
+            onClick={onOpen}
+          >
+            <SmallAddIcon me="5px" />
+            Catatan baru
+          </Button>
+        </Flex>
         <Flex flexDir="column" gap="50px" alignItems="center">
           <Flex
             flexDir={{ base: "column", md: "row" }}
@@ -43,6 +63,7 @@ const Planner = () => {
             <Box minW="30%" height="full">
               <Image src="/location-image-example.png" height="full" w="full" />
             </Box>
+
             <Flex
               flexGrow="1"
               color="tripl-new.black"
@@ -97,26 +118,6 @@ const Planner = () => {
                 vestibulum lectus eu eleifend tristique. Nulla facilisi.
               </Text>
             </Flex>
-          </Flex>
-          <Flex justifyContent="center" align="center" w="full">
-            <Button
-              bgColor="tripl-new.orange"
-              color="tripl-new.light"
-              px="100px"
-              py="10px"
-              borderRadius="50px"
-              transitionDuration="0.2s"
-              transitionTimingFunction="ease-in-out"
-              _hover={{
-                transform: "translateY(10%)",
-                transitionDuration: "0.2s",
-                transitionTimingFunction: "ease-in-out",
-              }}
-              onClick={onOpen}
-            >
-              <SmallAddIcon me="5px" />
-              Catatan baru
-            </Button>
           </Flex>
         </Flex>
       </Box>
