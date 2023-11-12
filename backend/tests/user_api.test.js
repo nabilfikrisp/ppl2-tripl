@@ -7,7 +7,10 @@ const { MONGODB_URI } = require('../utils/config');
 const api = supertest(app);
 
 beforeAll(async () => {
-  await mongoose.connect(MONGODB_URI);
+  mongoose.connect(MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
   const locations = await api.get('/api/locations?page=1&pageSize=2');
   const locationsId = locations.body.map((location) => location.id);
 
