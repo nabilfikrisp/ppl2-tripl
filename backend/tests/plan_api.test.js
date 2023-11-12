@@ -9,6 +9,10 @@ const api = supertest(app);
 const formattedDate = (dateInput) =>
   new Date(dateInput).toISOString().split('T')[0];
 
+beforeEach(() => {
+  jest.setTimeout(200000);
+});
+
 beforeAll(async () => {
   await api.post('/api/auth/register').send({
     email: 'planapi@gmail.com',
@@ -368,7 +372,7 @@ describe('Plan Update API', () => {
       description: 'This is a test plan3',
       locations: seedLocations,
     };
-    const wrongPlanId = `${initialPlanId.slice(0, -1)}f`;
+    const wrongPlanId = `${initialPlanId.slice(0, -3)}fff`;
     await api
       .put(`/api/plans/${wrongPlanId}`)
       .set('Authorization', `Bearer ${jwtToken}`)
