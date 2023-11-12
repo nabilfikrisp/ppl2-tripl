@@ -32,6 +32,7 @@ jobs:
       - name: Check style with ESLint
         run: npm run lint
       - name: Run tests
-        wait-on: http://localhost:3000
-        run: npm run test
-        timeout-minutes: 10
+        with:
+          wait-on: http://localhost:3000
+          run: npm run test
+          timeout-minutes: 10
