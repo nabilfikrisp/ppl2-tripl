@@ -1,5 +1,5 @@
-const Location = require('../models/location');
 const mongoose = require('mongoose');
+const Location = require('../models/location');
 
 const getAll = async (request, response) => {
   const { type, page, pageSize, search } = request.query;

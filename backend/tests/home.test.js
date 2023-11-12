@@ -1,6 +1,6 @@
+const mongoose = require('mongoose');
 const request = require('supertest');
 const app = require('../app');
-const mongoose = require('mongoose');
 
 describe('GET / endpoint', () => {
   test('Api is working', async () => {

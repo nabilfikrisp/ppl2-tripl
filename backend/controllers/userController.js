@@ -1,6 +1,5 @@
-const bcrypt = require('bcryptjs');
-const User = require('../models/user');
 const mongoose = require('mongoose');
+const User = require('../models/user');
 
 const getAll = async (request, response) => {
   const { includePlans } = request.query;

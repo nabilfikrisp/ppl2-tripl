@@ -1,8 +1,8 @@
+const mongoose = require('mongoose');
+const supertest = require('supertest');
 const app = require('../app');
 const User = require('../models/user');
 const Plan = require('../models/plan');
-const mongoose = require('mongoose');
-const supertest = require('supertest');
 
 const api = supertest(app);
 
@@ -20,9 +20,10 @@ beforeAll(async () => {
 describe('Plan Creation API', () => {
   test('POST /api/plans should create a plan', async () => {
     const locations = await api.get('/api/locations?page=1&pageSize=2');
-    const seedLocations = locations.body.map((location) => {
-      return { location: location.id, timeRange: '11:00-12:00' };
-    });
+    const seedLocations = locations.body.map((location) => ({
+      location: location.id,
+      timeRange: '11:00-12:00',
+    }));
 
     const loginResponse = await api
       .post('/api/auth/login')
@@ -55,9 +56,10 @@ describe('Plan Creation API', () => {
   });
   test('POST /api/plans with missing params should return 400', async () => {
     const locations = await api.get('/api/locations?page=1&pageSize=2');
-    const seedLocations = locations.body.map((location) => {
-      return { location: location.id, timeRange: '11:00-12:00' };
-    });
+    const seedLocations = locations.body.map((location) => ({
+      location: location.id,
+      timeRange: '11:00-12:00',
+    }));
 
     const loginResponse = await api
       .post('/api/auth/login')
@@ -181,9 +183,10 @@ describe('Plan Detail API', () => {
   let nonExistentPlanId;
   beforeAll(async () => {
     const locations = await api.get('/api/locations?page=1&pageSize=2');
-    const seedLocations = locations.body.map((location) => {
-      return { location: location.id, timeRange: '11:00-12:00' };
-    });
+    const seedLocations = locations.body.map((location) => ({
+      location: location.id,
+      timeRange: '11:00-12:00',
+    }));
     const loginResponse = await api
       .post('/api/auth/login')
       .send({
@@ -200,7 +203,7 @@ describe('Plan Detail API', () => {
       locations: seedLocations,
     };
 
-    const createPlanResponse = await api
+    await api
       .post('/api/plans')
       .set('Authorization', `Bearer ${jwtToken}`)
       .send(newPlanData)
@@ -240,13 +243,12 @@ describe('Plan Detail API', () => {
   });
 
   test('GET /api/plans/:id should return 404 if plan is not found', async () => {
-    const response = await api
-      .get(`/api/plans/${nonExistentPlanId}`)
-      .expect(404);
+    await api.get(`/api/plans/${nonExistentPlanId}`).expect(404);
   });
-  test('GET /api/plans/:id should return 404 if plan is not found', async () => {
-    const randomId = validPlanId.slice(0, -5) + 'fffff';
-    const response = await api.get(`/api/plans/${randomId}`).expect(404);
+
+  test('GET /api/plans/:id should return 404 if plan is not found with randomId', async () => {
+    const randomId = `${validPlanId.slice(0, -5)}fffff`;
+    await api.get(`/api/plans/${randomId}`).expect(404);
   });
 });
 
@@ -255,9 +257,10 @@ describe('Plan Update API', () => {
   let initialPlanId;
   beforeAll(async () => {
     const locations = await api.get('/api/locations?page=1&pageSize=2');
-    const seedLocations = locations.body.map((location) => {
-      return { location: location.id, timeRange: '11:00-12:00' };
-    });
+    const seedLocations = locations.body.map((location) => ({
+      location: location.id,
+      timeRange: '11:00-12:00',
+    }));
     const loginResponse = await api
       .post('/api/auth/login')
       .send({
@@ -274,7 +277,7 @@ describe('Plan Update API', () => {
       locations: seedLocations,
     };
 
-    const createPlanResponse = await api
+    await api
       .post('/api/plans')
       .set('Authorization', `Bearer ${jwtToken}`)
       .send(newPlanData)
@@ -290,16 +293,17 @@ describe('Plan Update API', () => {
   });
   test('PUT /api/plans/:id should update the plans', async () => {
     const locations = await api.get('/api/locations?page=1&pageSize=3');
-    const seedLocations = locations.body.slice(1, 3).map((location) => {
-      return { location: location.id, timeRange: '11:00-13:00' };
-    });
+    const seedLocations = locations.body
+      .slice(1, 3)
+      .map((location) => ({ location: location.id, timeRange: '11:00-13:00' }));
     const updatePlanData = {
       date: '2023-12-03',
       title: 'Test Plan3',
       description: 'This is a test plan3',
       locations: seedLocations,
     };
-    const updateResonpse = await api
+
+    await api
       .put(`/api/plans/${initialPlanId}`)
       .set('Authorization', `Bearer ${jwtToken}`)
       .send(updatePlanData)
@@ -336,9 +340,9 @@ describe('Plan Update API', () => {
     const newJwtToken = newLoginResponse.body.token;
 
     const locations = await api.get('/api/locations?page=1&pageSize=3');
-    const seedLocations = locations.body.slice(1, 3).map((location) => {
-      return { location: location.id, timeRange: '11:00-13:00' };
-    });
+    const seedLocations = locations.body
+      .slice(1, 3)
+      .map((location) => ({ location: location.id, timeRange: '11:00-13:00' }));
     const updatePlanData = {
       date: '2023-12-04',
       title: 'Test Plan4',
@@ -346,7 +350,7 @@ describe('Plan Update API', () => {
       locations: seedLocations,
     };
 
-    const updateResponse = await api
+    await api
       .put(`/api/plans/${initialPlanId}`)
       .set('Authorization', `Bearer ${newJwtToken}`)
       .send(updatePlanData)
@@ -355,16 +359,16 @@ describe('Plan Update API', () => {
 
   test('PUT /api/plans/:id with wrong plan id should return 400', async () => {
     const locations = await api.get('/api/locations?page=1&pageSize=3');
-    const seedLocations = locations.body.slice(1, 3).map((location) => {
-      return { location: location.id, timeRange: '11:00-13:00' };
-    });
+    const seedLocations = locations.body
+      .slice(1, 3)
+      .map((location) => ({ location: location.id, timeRange: '11:00-13:00' }));
     const updatePlanData = {
       date: '2023-12-03',
       title: 'Test Plan3',
       description: 'This is a test plan3',
       locations: seedLocations,
     };
-    const wrongPlanId = initialPlanId.slice(0, -1) + 'f';
+    const wrongPlanId = `${initialPlanId.slice(0, -1)}f`;
     await api
       .put(`/api/plans/${wrongPlanId}`)
       .set('Authorization', `Bearer ${jwtToken}`)

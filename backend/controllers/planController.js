@@ -1,5 +1,5 @@
-const Plan = require('../models/plan');
 const mongoose = require('mongoose');
+const Plan = require('../models/plan');
 
 const getAll = async (request, response) => {
   const { includeCreator, includeLocations } = request.query;
