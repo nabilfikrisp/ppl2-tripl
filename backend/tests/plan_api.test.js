@@ -3,8 +3,16 @@ const supertest = require('supertest');
 const app = require('../app');
 const User = require('../models/user');
 const Plan = require('../models/plan');
+const { MONGODB_URI } = require('../utils/config');
 
 const api = supertest(app);
+
+beforeAll(() => {
+  mongoose.connect(MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
+});
 
 const formattedDate = (dateInput) =>
   new Date(dateInput).toISOString().split('T')[0];
