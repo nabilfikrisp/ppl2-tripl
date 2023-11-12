@@ -10,7 +10,9 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-
+    defaults:
+      run:
+        working-directory: ./backend
     env:
       PORT: 3000
       MONGODB_URI: ${{ secrets.MONGODB_URI }}
@@ -26,15 +28,10 @@ jobs:
         with:
           node-version: "16"
       - name: Change directory to backend and install dependencies
-        run: |
-          cd backend
-          npm install
+        run: npm install
       - name: Check style with ESLint
-        run: |
-          cd backend
-          npm run lint
+        run: npm run lint
       - name: Run tests
-        run: |
-          cd backend
-          npm run test
+        wait-on: http://localhost:3000
+        run: npm run test
         timeout-minutes: 10
