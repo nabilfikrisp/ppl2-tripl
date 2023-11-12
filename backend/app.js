@@ -11,6 +11,7 @@ const middleware = require('./utils/middleware');
 
 mongoose.set('strictQuery', false);
 const mongoUrl = config.MONGODB_URI;
+// istanbul ignore next: This line is excluded from test coverage
 mongoose
   .connect(mongoUrl)
   .then(() => {
