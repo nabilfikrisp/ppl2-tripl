@@ -11,6 +11,16 @@
   },
   "author": "nabilfikrisp",
   "license": "ISC",
+  "jest": {
+    "coverageThreshold": {
+      "global": {
+        "branches": 60,
+        "functions": 60,
+        "lines": 60,
+        "statements": 60
+      }
+    }
+  },
   "dependencies": {
     "axios": "^1.5.0",
     "bcryptjs": "^2.4.3",
