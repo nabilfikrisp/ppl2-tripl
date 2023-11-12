@@ -4,7 +4,7 @@
   "description": "rest-api-for-ppl2",
   "main": "index.js",
   "scripts": {
-    "test": "cross-env NODE_ENV=test jest --runInBand --verbose --coverage  --testTimeout=400000  --forceExit --detectOpenHandles",
+    "test": "cross-env NODE_ENV=test jest --runInBand  --coverage --verbose",
     "test:local": "cross-env NODE_ENV=test jest --verbose --runInBand --coverage  --testTimeout=200000",
     "start": "cross-env NODE_ENV=production node index.js",
     "dev": "cross-env NODE_ENV=development nodemon index.js",
