@@ -1,6 +1,7 @@
 name: Backend Tests on Pull Request
 on:
   pull_request:
+    types: [opened, reopened, edited]
     paths:
       - "backend/**"
     branches:
