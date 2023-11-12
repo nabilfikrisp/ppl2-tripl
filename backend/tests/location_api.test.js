@@ -1,8 +1,13 @@
 const mongoose = require('mongoose');
 const supertest = require('supertest');
 const app = require('../app');
+const { MONGODB_URI } = require('../utils/config');
 
 const api = supertest(app);
+
+beforeAll(async () => {
+  await mongoose.connect(MONGODB_URI);
+});
 
 describe('Locations API', () => {
   test('returns locations as JSON', async () => {

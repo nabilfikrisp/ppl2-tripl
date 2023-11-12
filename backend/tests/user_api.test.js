@@ -1,11 +1,13 @@
-const app = require('../app');
-const User = require('../models/user');
 const mongoose = require('mongoose');
 const supertest = require('supertest');
+const app = require('../app');
+const User = require('../models/user');
+const { MONGODB_URI } = require('../utils/config');
 
 const api = supertest(app);
 
 beforeAll(async () => {
+  await mongoose.connect(MONGODB_URI);
   const locations = await api.get('/api/locations?page=1&pageSize=2');
   const locationsId = locations.body.map((location) => location.id);
 
@@ -57,29 +59,14 @@ describe('User API', () => {
   test('GET /api/users/:id should return 404 if user is not found with malformatted id', async () => {
     const nonExistentUserId = '012312312';
 
-    const response = await api
-      .get(`/api/users/${nonExistentUserId}`)
-      .expect(404);
+    await api.get(`/api/users/${nonExistentUserId}`).expect(404);
   });
 
   test('GET /api/users/:id should return 404 if user is not found', async () => {
     const nonExistentUserId = '6515523b450954f327877039';
 
-    const response = await api
-      .get(`/api/users/${nonExistentUserId}`)
-      .expect(404);
+    await api.get(`/api/users/${nonExistentUserId}`).expect(404);
   });
-
-  // test('GET /api/users/:id should return error if invalid ID is provided', async () => {
-  //   const invalidId = 'invalid-id-format';
-
-  //   const response = await api
-  //     .get(`/api/users/${invalidId}`)
-  //     .expect(400);
-
-  //   // Ensure it returns an error message
-  //   expect(response.body.error).toBeDefined();
-  // });
 });
 
 afterAll(async () => {
