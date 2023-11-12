@@ -9,10 +9,6 @@ const api = supertest(app);
 const formattedDate = (dateInput) =>
   new Date(dateInput).toISOString().split('T')[0];
 
-beforeEach(() => {
-  jest.setTimeout(200000);
-});
-
 beforeAll(async () => {
   await api.post('/api/auth/register').send({
     email: 'planapi@gmail.com',
