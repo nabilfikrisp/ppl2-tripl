@@ -7,11 +7,8 @@ const { MONGODB_URI } = require('../utils/config');
 
 const api = supertest(app);
 
-beforeAll(() => {
-  mongoose.connect(MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  });
+beforeAll(async () => {
+  await mongoose.connect(MONGODB_URI);
 });
 
 const formattedDate = (dateInput) =>
