@@ -27,12 +27,11 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: "16"
+          wait-on: http://localhost:3000
       - name: Change directory to backend and install dependencies
         run: npm install
       - name: Check style with ESLint
         run: npm run lint
       - name: Run tests
-        with:
-          wait-on: http://localhost:3000
-          run: npm run test
-          timeout-minutes: 10
+        run: npm run test
+        timeout-minutes: 10
