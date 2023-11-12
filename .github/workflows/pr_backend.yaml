@@ -22,7 +22,7 @@ jobs:
       - name: Check style with ESLint
         run: |
           cd backend
-          npm run eslint
+          npm run lint
       - name: Run tests
         run: |
           cd backend
