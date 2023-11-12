@@ -24,7 +24,7 @@ const login = async (request, response) => {
     user === null ? false : await bcrypt.compare(password, user.passwordHash);
 
   if (!(user && passwordCorrect)) {
-    return response.status(401).json({
+    return response.status(400).json({
       error: 'invalid email or password',
     });
   }
@@ -59,10 +59,10 @@ const register = async (request, response) => {
     return response.status(400).json('email already registered');
   }
 
-  if (password.length < 3) {
+  if (password.length < 6) {
     return response
       .status(400)
-      .json('password must be at least 3 characters long');
+      .json('password must be at least 6 characters long');
   }
 
   const saltRounds = 10;
@@ -78,6 +78,7 @@ const register = async (request, response) => {
     const savedUser = await user.save();
     return response.status(201).json(savedUser);
   } catch (error) {
+    // istanbul ignore next: This line is excluded from test coverage
     return response.status(400).json({ error: `${error}` });
   }
 };
