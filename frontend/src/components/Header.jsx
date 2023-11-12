@@ -11,6 +11,8 @@ import {
 import { Link, NavLink } from "react-router-dom";
 import React from "react";
 import { CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
+import { useAuth } from "./hooks/useAuth";
+import Logout from "./Logout";
 
 const data = [
   {
@@ -25,6 +27,7 @@ const data = [
 
 export default function Header() {
   const [isDrawerOpen, setIsDrawerOpen] = useBoolean(false);
+  const { user } = useAuth();
 
   return (
     <Box as="nav" id="header" position="sticky" top="0" left="0" zIndex="99">
@@ -35,14 +38,14 @@ export default function Header() {
         minHeight="100px"
         align="center"
         justify="space-between"
-        backgroundColor="tripl.green-200"
+        backgroundColor="tripl-new.light"
         textColor="tripl.dark"
         boxShadow="lg"
       >
         <Link to="/">
           <Text
             fontWeight="1000"
-            color="tripl.dark"
+            color="tripl-new.orange"
             fontSize="32px"
             transitionDuration="0.2s"
             transitionTimingFunction="ease-in-out"
@@ -74,39 +77,50 @@ export default function Header() {
               </Button>
             </NavLink>
           ))}
-          <Link to={"/sign-in"}>
-            <Button
-              bgColor="tripl.dark"
-              color="tripl.light"
-              transitionDuration="0.2s"
-              boxShadow="lg"
-              transitionTimingFunction="ease-in-out"
-              _hover={{
-                transform: "translateY(10%)",
-                transitionDuration: "0.2s",
-                transitionTimingFunction: "ease-in-out",
-              }}
-            >
-              Sign In
-            </Button>
-          </Link>
+          {user === null && (
+            <>
+              <Link to={"/sign-in"}>
+                <Button
+                  bgColor="tripl-new.orange"
+                  color="tripl-new.light"
+                  transitionDuration="0.2s"
+                  boxShadow="lg"
+                  transitionTimingFunction="ease-in-out"
+                  _hover={{
+                    transform: "translateY(10%)",
+                    transitionDuration: "0.2s",
+                    transitionTimingFunction: "ease-in-out",
+                  }}
+                >
+                  Sign In
+                </Button>
+              </Link>
 
-          <Link to={"/sign-up"}>
-            <Button
-              bgColor="tripl.green-100"
-              color="tripl.dark"
-              boxShadow="lg"
-              transitionDuration="0.2s"
-              transitionTimingFunction="ease-in-out"
-              _hover={{
-                transform: "translateY(10%)",
-                transitionDuration: "0.2s",
-                transitionTimingFunction: "ease-in-out",
-              }}
-            >
-              Sign Up
-            </Button>
-          </Link>
+              <Link to={"/sign-up"}>
+                <Button
+                  border="1px solid"
+                  bgColor="tripl-new.light"
+                  color="tripl-new.orange"
+                  boxShadow="lg"
+                  transitionDuration="0.2s"
+                  transitionTimingFunction="ease-in-out"
+                  _hover={{
+                    transform: "translateY(10%)",
+                    transitionDuration: "0.2s",
+                    transitionTimingFunction: "ease-in-out",
+                  }}
+                >
+                  Sign Up
+                </Button>
+              </Link>
+            </>
+          )}
+          {user !== null && (
+            <>
+              <Text fontWeight="700">Hi, {user.name}!</Text>
+              <Logout />
+            </>
+          )}
         </HStack>
         <Box
           display={{ base: "block", md: "none" }}
@@ -194,7 +208,7 @@ export default function Header() {
                   transitionTimingFunction: "ease-in-out",
                 }}
               >
-                Sign In
+                Login
               </Button>
             </Link>
             <Link to={"/sign-up"}>

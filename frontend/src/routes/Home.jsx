@@ -1,18 +1,21 @@
 import React from "react";
-import BrandingSection from "../components/landing-page/BrandingSection";
-import { Box } from "@chakra-ui/react";
-import ExploreSection from "../components/landing-page/ExploreSection";
-import PlannerSection from "../components/landing-page/PlannerSection";
-import FeatureSection from "../components/landing-page/FeatureSection";
+import { Flex } from "@chakra-ui/react";
+import HeroSection from "../components/landing-page/HeroSection";
+import ProductSection from "../components/landing-page/ProductSection";
 
 const Home = () => {
   return (
-    <Box width="full">
-      <BrandingSection />
-      <ExploreSection />
-      <PlannerSection />
-      <FeatureSection />
-    </Box>
+    <Flex
+      width="full"
+      flexDir="column"
+      minHeight="65vh"
+      height="full"
+      gap={{ xl: "100px" }}
+      pb="50px"
+    >
+      <HeroSection />
+      <ProductSection />
+    </Flex>
   );
 };
 

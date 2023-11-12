@@ -7,7 +7,6 @@ import {
   FormLabel,
   Grid,
   GridItem,
-  Image,
   Input,
   InputGroup,
   InputLeftElement,
@@ -15,6 +14,8 @@ import {
   Text,
   VStack,
   Link as ChakraLink,
+  HStack,
+  Divider,
 } from "@chakra-ui/react";
 import React from "react";
 import { FaUserAlt } from "react-icons/fa";
@@ -22,6 +23,12 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useNavigate } from "react-router-dom";
+import { FcGoogle } from "react-icons/fc";
+import axios from "axios";
+import { BASE_ENDPOINT } from "../api";
+import useAlert from "../components/hooks/useAlert";
+import { useGoogleLogin } from "@react-oauth/google";
+import { useAuth } from "../components/hooks/useAuth";
 
 const signUpSchema = z
   .object({
@@ -36,6 +43,8 @@ const signUpSchema = z
   });
 
 const SignUp = () => {
+  const { login } = useAuth();
+  const { handleSuccess, handleError } = useAlert();
   const {
     handleSubmit,
     register,
@@ -48,49 +57,91 @@ const SignUp = () => {
 
   const [show, setShow] = React.useState(false);
   const handleClick = () => setShow(!show);
+  const redirectPath = location.state?.path || "/";
 
-  const onSubmit = async (data) => {
-    console.log(data, "SUBMIT");
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    reset();
-    navigate("/sign-in");
+  const registerUser = async (params) => {
+    try {
+      const response = await axios.post(
+        `${BASE_ENDPOINT}/auth/register`,
+        params
+      );
+      handleSuccess("We registered your account, you may login now :)");
+      reset();
+      navigate("/sign-in");
+      return response.data;
+    } catch (error) {
+      handleError(error.request.responseText);
+      return null;
+    }
+  };
+
+  const googleLogin = useGoogleLogin({
+    flow: "auth-code",
+    onSuccess: async (tokenResponse) => {
+      try {
+        const response = await axios.post(`${BASE_ENDPOINT}/auth/google`, {
+          code: tokenResponse.code,
+        });
+        handleSuccess("Login success");
+        login(response.data);
+        reset();
+        navigate(redirectPath, { replace: true });
+      } catch (error) {
+        handleError(JSON.stringify(error.response.data.error));
+        return null;
+      }
+    },
+  });
+
+  const onSubmit = async (values) => {
+    registerUser(values);
   };
 
   return (
     <Grid
       width="full"
-      paddingY="80px"
+      paddingY="40px"
       paddingX="40px"
       gridTemplateColumns={{ base: "1fr", xl: "repeat(2,1fr)" }}
-      gap="40px"
+      bgImage="/auth-bg.svg"
+      bgRepeat="no-repeat"
+      bgSize="cover"
+      bgPos="center"
     >
       <GridItem paddingX={{ lg: 20 }}>
         <Box
-          bgColor="tripl.dark"
-          borderRadius={10}
-          padding={10}
-          textColor="tripl.green-100"
+          bgColor="tripl-new.light"
+          borderRadius="50px"
+          padding="40px"
+          textColor="tripl-new.orange"
+          border="1px solid"
+          borderColor="tripl-new.gray-100"
+          boxShadow="xl"
         >
           <Text as="h1" fontSize="3xl" textAlign="center">
             Sign Up
           </Text>
           <form onSubmit={handleSubmit(onSubmit)}>
-            <VStack gap={7}>
+            <VStack gap="25px">
               <FormControl isInvalid={errors.name}>
-                <FormLabel>Name</FormLabel>
+                <FormLabel color="tripl-new.black" ms="20px">
+                  Name
+                </FormLabel>
                 <InputGroup>
                   <InputLeftElement pointerEvents="none">
-                    <FaUserAlt color="tripl.green-100 " />
+                    <FaUserAlt color="tripl-new.orange" />
                   </InputLeftElement>
                   <Input
                     placeholder="Name"
-                    borderColor="tripl.green-100"
+                    bgColor="tripl-new.cream"
                     borderWidth="2px"
-                    focusBorderColor="tripl.green-300"
-                    color="tripl.green-100"
+                    focusBorderColor="tripl-new.orange"
                     fontWeight="600"
-                    _placeholder={{ color: "tripl.green-200", opacity: "0.7" }}
-                    _focus={{ bgColor: "tripl.green-300" }}
+                    borderRadius="50px"
+                    _placeholder={{
+                      color: "tripl-new.gray-200",
+                      opacity: "0.7",
+                    }}
                     {...register("name")}
                   />
                 </InputGroup>
@@ -99,20 +150,24 @@ const SignUp = () => {
                 </FormErrorMessage>
               </FormControl>
               <FormControl isInvalid={errors.email}>
-                <FormLabel>Email</FormLabel>
+                <FormLabel color="tripl-new.black" ms="20px">
+                  Email
+                </FormLabel>
                 <InputGroup>
                   <InputLeftElement pointerEvents="none">
-                    <EmailIcon color="tripl.green-100 " />
+                    <EmailIcon color="tripl-new.orange" />
                   </InputLeftElement>
                   <Input
                     placeholder="Email"
-                    borderColor="tripl.green-100"
+                    bgColor="tripl-new.cream"
                     borderWidth="2px"
-                    focusBorderColor="tripl.green-300"
-                    color="tripl.green-100"
+                    focusBorderColor="tripl-new.orange"
                     fontWeight="600"
-                    _placeholder={{ color: "tripl.green-200", opacity: "0.7" }}
-                    _focus={{ bgColor: "tripl.green-300" }}
+                    borderRadius="50px"
+                    _placeholder={{
+                      color: "tripl-new.gray-200",
+                      opacity: "0.7",
+                    }}
                     {...register("email")}
                   />
                 </InputGroup>
@@ -122,19 +177,23 @@ const SignUp = () => {
               </FormControl>
 
               <FormControl isInvalid={errors.password}>
-                <FormLabel>Password</FormLabel>
+                <FormLabel color="tripl-new.black" ms="20px">
+                  Password
+                </FormLabel>
                 <InputGroup size="md">
                   <InputLeftElement>
                     <LockIcon />
                   </InputLeftElement>
                   <Input
-                    borderColor="tripl.green-100"
+                    bgColor="tripl-new.cream"
                     borderWidth="2px"
-                    focusBorderColor="tripl.green-300"
-                    color="tripl.green-100"
+                    focusBorderColor="tripl-new.orange"
                     fontWeight="600"
-                    _placeholder={{ color: "tripl.green-200", opacity: "0.7" }}
-                    _focus={{ bgColor: "tripl.green-300" }}
+                    borderRadius="50px"
+                    _placeholder={{
+                      color: "tripl-new.gray-200",
+                      opacity: "0.7",
+                    }}
                     type={show ? "text" : "password"}
                     placeholder="Enter password"
                     {...register("password")}
@@ -153,19 +212,23 @@ const SignUp = () => {
               </FormControl>
 
               <FormControl isInvalid={errors.confirmPassword}>
-                <FormLabel>Password Confirmation</FormLabel>
+                <FormLabel color="tripl-new.black" ms="20px">
+                  Password Confirmation
+                </FormLabel>
                 <InputGroup size="md">
                   <InputLeftElement>
                     <LockIcon />
                   </InputLeftElement>
                   <Input
-                    borderColor="tripl.green-100"
+                    bgColor="tripl-new.cream"
                     borderWidth="2px"
-                    focusBorderColor="tripl.green-300"
-                    color="tripl.green-100"
+                    focusBorderColor="tripl-new.orange"
                     fontWeight="600"
-                    _placeholder={{ color: "tripl.green-200", opacity: "0.7" }}
-                    _focus={{ bgColor: "tripl.green-300" }}
+                    borderRadius="50px"
+                    _placeholder={{
+                      color: "tripl-new.gray-200",
+                      opacity: "0.7",
+                    }}
                     type={show ? "text" : "password"}
                     placeholder="Confrim password"
                     {...register("confirmPassword")}
@@ -183,8 +246,8 @@ const SignUp = () => {
                 </FormErrorMessage>
               </FormControl>
               <Button
-                bgColor="tripl.green-100"
-                color="tripl.dark"
+                bgColor="tripl-new.orange"
+                color="tripl-new.light"
                 boxShadow="lg"
                 transitionDuration="0.2s"
                 transitionTimingFunction="ease-in-out"
@@ -193,29 +256,54 @@ const SignUp = () => {
                   transitionDuration: "0.2s",
                   transitionTimingFunction: "ease-in-out",
                 }}
+                borderRadius="50px"
+                mt="25px"
+                w="full"
                 isLoading={isSubmitting}
                 type="submit"
               >
                 Sign Up
               </Button>
-              {/* <HStack width="full">
-                <Divider border="1px" borderRadius={"2xl"} />
-                <Text>or</Text>
-                <Divider border="1px" borderRadius={"2xl"} />
-              </HStack> */}
-              <Text>
+              <Text color="tripl-new.black">
                 Already have an account?{" "}
-                <ChakraLink as={Link} to="/sign-in" color="tripl.green-400">
+                <ChakraLink as={Link} to="/sign-in" color="tripl-new.orange">
                   Sign In
                 </ChakraLink>
               </Text>
+              <HStack width="full">
+                <Divider border="1px" borderRadius={"2xl"} />
+                <Text color="tripl-new.black">or</Text>
+                <Divider border="1px" borderRadius={"2xl"} />
+              </HStack>
+              <Button
+                color="tripl-new.orange"
+                bgColor="tripl-new.light"
+                border="1px solid"
+                boxShadow="lg"
+                transitionDuration="0.2s"
+                transitionTimingFunction="ease-in-out"
+                _hover={{
+                  transform: "translateY(10%)",
+                  transitionDuration: "0.2s",
+                  transitionTimingFunction: "ease-in-out",
+                }}
+                borderRadius="50px"
+                w="full"
+                isLoading={isSubmitting}
+                onClick={() => {
+                  googleLogin();
+                }}
+              >
+                <Box as="span" me="10px">
+                  <FcGoogle />
+                </Box>
+                Sign In with Google
+              </Button>
             </VStack>
           </form>
         </Box>
       </GridItem>
-      <GridItem display={{ base: "none", xl: "block" }}>
-        <Image src="/register_illustration.svg" />
-      </GridItem>
+      <GridItem display={{ base: "none", xl: "block" }}></GridItem>
     </Grid>
   );
 };

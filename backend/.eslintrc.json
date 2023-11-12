@@ -30,6 +30,7 @@
       {
         "endOfLine": "auto"
       }
-    ]
+    ],
+    "node/no-unpublished-require": ["error", { "devDependencies": true }]
   }
 }
