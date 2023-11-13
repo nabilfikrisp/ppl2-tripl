@@ -5,7 +5,7 @@ const planRouter = require('./planRoutes');
 const userRouter = require('./userRoutes');
 
 router.get('/', (requrest, response) => {
-  response.send('<h1>Hello Bang</h1>');
+  response.send('<h1>Hello World</h1>');
 });
 
 router.use('/api/auth', authRouter);
