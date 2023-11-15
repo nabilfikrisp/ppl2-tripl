@@ -17,32 +17,36 @@ beforeAll(() => {
 const formattedDate = (dateInput) =>
   new Date(dateInput).toISOString().split('T')[0];
 
+let seedLocations;
+let jwtToken;
+
 beforeAll(async () => {
   await api.post('/api/auth/register').send({
     email: 'planapi@gmail.com',
     name: 'plan',
     password: 'password123',
   });
+
+  const locations = await api.get('/api/locations?page=1&pageSize=2');
+
+  seedLocations = locations.body.map((location) => ({
+    location: location.id,
+    timeRange: '11:00-12:00',
+  }));
+
+  const loginResponse = await api
+    .post('/api/auth/login')
+    .send({
+      email: 'planapi@gmail.com',
+      password: 'password123',
+    })
+    .expect(200);
+
+  jwtToken = loginResponse.body.token;
 });
 
 describe('Plan Creation API', () => {
   test('POST /api/plans should create a plan', async () => {
-    const locations = await api.get('/api/locations?page=1&pageSize=2');
-    const seedLocations = locations.body.map((location) => ({
-      location: location.id,
-      timeRange: '11:00-12:00',
-    }));
-
-    const loginResponse = await api
-      .post('/api/auth/login')
-      .send({
-        email: 'planapi@gmail.com',
-        password: 'password123',
-      })
-      .expect(200);
-
-    const jwtToken = loginResponse.body.token;
-
     const newPlanData = {
       date: '2023-12-01',
       title: 'Test Plan',
@@ -62,23 +66,8 @@ describe('Plan Creation API', () => {
       formattedDate(newPlanData.date)
     );
   });
+
   test('POST /api/plans with missing params should return 400', async () => {
-    const locations = await api.get('/api/locations?page=1&pageSize=2');
-    const seedLocations = locations.body.map((location) => ({
-      location: location.id,
-      timeRange: '11:00-12:00',
-    }));
-
-    const loginResponse = await api
-      .post('/api/auth/login')
-      .send({
-        email: 'planapi@gmail.com',
-        password: 'password123',
-      })
-      .expect(200);
-
-    const jwtToken = loginResponse.body.token;
-
     const noDatePlanData = {
       title: 'Test Plan',
       description: 'This is a test plan',
@@ -131,15 +120,6 @@ describe('Plan API', () => {
   });
 
   test('GET /api/plans/me should return logged in user plans', async () => {
-    const loginResponse = await api
-      .post('/api/auth/login')
-      .send({
-        email: 'planapi@gmail.com',
-        password: 'password123',
-      })
-      .expect(200);
-
-    const jwtToken = loginResponse.body.token;
     const response = await api
       .get('/api/plans/me')
       .set('Authorization', `Bearer ${jwtToken}`)
@@ -149,15 +129,6 @@ describe('Plan API', () => {
   });
 
   test('GET /api/plans/me should return logged in user plans with includeCreator', async () => {
-    const loginResponse = await api
-      .post('/api/auth/login')
-      .send({
-        email: 'planapi@gmail.com',
-        password: 'password123',
-      })
-      .expect(200);
-
-    const jwtToken = loginResponse.body.token;
     const response = await api
       .get('/api/plans/me/?includeCreator=true')
       .set('Authorization', `Bearer ${jwtToken}`)
@@ -168,15 +139,6 @@ describe('Plan API', () => {
   });
 
   test('GET /api/plans/me should return logged in user plans with includeLocations', async () => {
-    const loginResponse = await api
-      .post('/api/auth/login')
-      .send({
-        email: 'planapi@gmail.com',
-        password: 'password123',
-      })
-      .expect(200);
-
-    const jwtToken = loginResponse.body.token;
     const response = await api
       .get('/api/plans/me/?includeLocations=true')
       .set('Authorization', `Bearer ${jwtToken}`)
@@ -190,20 +152,6 @@ describe('Plan Detail API', () => {
   let validPlanId;
   let nonExistentPlanId;
   beforeAll(async () => {
-    const locations = await api.get('/api/locations?page=1&pageSize=2');
-    const seedLocations = locations.body.map((location) => ({
-      location: location.id,
-      timeRange: '11:00-12:00',
-    }));
-    const loginResponse = await api
-      .post('/api/auth/login')
-      .send({
-        email: 'planapi@gmail.com',
-        password: 'password123',
-      })
-      .expect(200);
-
-    const jwtToken = loginResponse.body.token;
     const newPlanData = {
       date: '2023-12-02',
       title: 'Test Plan2',
@@ -261,23 +209,9 @@ describe('Plan Detail API', () => {
 });
 
 describe('Plan Update API', () => {
-  let jwtToken;
   let initialPlanId;
+  let updateSeedLocations;
   beforeAll(async () => {
-    const locations = await api.get('/api/locations?page=1&pageSize=2');
-    const seedLocations = locations.body.map((location) => ({
-      location: location.id,
-      timeRange: '11:00-12:00',
-    }));
-    const loginResponse = await api
-      .post('/api/auth/login')
-      .send({
-        email: 'planapi@gmail.com',
-        password: 'password123',
-      })
-      .expect(200);
-
-    jwtToken = loginResponse.body.token;
     const newPlanData = {
       date: '2023-12-02',
       title: 'Test Plan2',
@@ -298,17 +232,18 @@ describe('Plan Update API', () => {
 
     const myPlans = response.body;
     initialPlanId = myPlans[0].id;
-  });
-  test('PUT /api/plans/:id should update the plans', async () => {
+
     const locations = await api.get('/api/locations?page=1&pageSize=3');
-    const seedLocations = locations.body
+    updateSeedLocations = locations.body
       .slice(1, 3)
       .map((location) => ({ location: location.id, timeRange: '11:00-13:00' }));
+  });
+  test('PUT /api/plans/:id should update the plans', async () => {
     const updatePlanData = {
       date: '2023-12-03',
       title: 'Test Plan3',
       description: 'This is a test plan3',
-      locations: seedLocations,
+      locations: updateSeedLocations,
     };
 
     await api
@@ -347,15 +282,11 @@ describe('Plan Update API', () => {
 
     const newJwtToken = newLoginResponse.body.token;
 
-    const locations = await api.get('/api/locations?page=1&pageSize=3');
-    const seedLocations = locations.body
-      .slice(1, 3)
-      .map((location) => ({ location: location.id, timeRange: '11:00-13:00' }));
     const updatePlanData = {
       date: '2023-12-04',
       title: 'Test Plan4',
       description: 'This is a test plan3',
-      locations: seedLocations,
+      locations: updateSeedLocations,
     };
 
     await api
@@ -366,15 +297,11 @@ describe('Plan Update API', () => {
   });
 
   test('PUT /api/plans/:id with wrong plan id should return 400', async () => {
-    const locations = await api.get('/api/locations?page=1&pageSize=3');
-    const seedLocations = locations.body
-      .slice(1, 3)
-      .map((location) => ({ location: location.id, timeRange: '11:00-13:00' }));
     const updatePlanData = {
       date: '2023-12-03',
       title: 'Test Plan3',
       description: 'This is a test plan3',
-      locations: seedLocations,
+      locations: updateSeedLocations,
     };
     const wrongPlanId = `${initialPlanId.slice(0, -3)}fff`;
     await api
