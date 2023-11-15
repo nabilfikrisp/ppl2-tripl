@@ -317,6 +317,70 @@ describe('Plan Update API', () => {
   });
 });
 
+describe('Plan Delete API', () => {
+  let initialDeletedId;
+  beforeEach(async () => {
+    const newPlanData = {
+      date: '2023-12-01',
+      title: 'Test Plan',
+      description: 'This is a test plan',
+      locations: seedLocations,
+    };
+
+    const postReponse = await api
+      .post('/api/plans')
+      .set('Authorization', `Bearer ${jwtToken}`)
+      .send(newPlanData)
+      .expect(201);
+
+    initialDeletedId = postReponse.body.id;
+  });
+  test('DELETE /api/plans/:id should delete a plan and return 204 status', async () => {
+    const response = await api
+      .delete(`/api/plans/${initialDeletedId}`)
+      .set('Authorization', `Bearer ${jwtToken}`);
+
+    expect(response.status).toBe(204);
+    expect(response.body).toEqual({});
+  });
+
+  test('DELETE /api/plans/:id with wrong id or malformatted id', async () => {
+    await api
+      .delete(`/api/plans/${initialDeletedId.slice(0, -3)}fff`)
+      .set('Authorization', `Bearer ${jwtToken}`)
+      .expect(404);
+
+    await api
+      .delete(`/api/plans/randomid`)
+      .set('Authorization', `Bearer ${jwtToken}`)
+      .expect(404);
+  });
+  test('DELETE /api/plans/:id with unathorized user', async () => {
+    await api
+      .post('/api/auth/register')
+      .send({
+        email: 'deletePlan@gmail.com',
+        name: 'unit',
+        password: 'password123',
+      })
+      .expect(201);
+
+    const loginResponse = await api
+      .post('/api/auth/login')
+      .send({
+        email: 'deletePlan@gmail.com',
+        password: 'password123',
+      })
+      .expect(200);
+
+    const response = await api
+      .delete(`/api/plans/${initialDeletedId}`)
+      .set('Authorization', `Bearer ${loginResponse.body.token}`);
+
+    expect(response.status).toBe(401);
+  });
+});
+
 afterAll(async () => {
   await Plan.collection.drop();
   await User.collection.drop();
