@@ -1,5 +1,8 @@
 const mongoose = require('mongoose');
 const Plan = require('../models/plan');
+const User = require('../models/user');
+
+const ObjectId = mongoose.Types.ObjectId;
 
 const getAll = async (request, response) => {
   const { includeCreator, includeLocations } = request.query;
@@ -161,4 +164,39 @@ const save = async (request, response) => {
   }
 };
 
-module.exports = { getAll, detail, save, myPlan, update };
+const destroy = async (request, response) => {
+  const { id } = request.params;
+  const user = request.user;
+
+  try {
+    const isValid = mongoose.Types.ObjectId.isValid(id);
+    if (!isValid) {
+      return response.status(404).json('Plan not found');
+    }
+
+    const oldPlan = await Plan.findById(id);
+    if (!oldPlan) {
+      return response.status(404).json('Plan not found');
+    }
+    if (user.id !== oldPlan.creator.toString()) {
+      return response.status(401).end();
+    }
+
+    const objectIdToRemove = new ObjectId(id);
+
+    await User.findByIdAndUpdate(
+      user._id,
+      { $pull: { plans: objectIdToRemove } },
+      { new: true }
+    );
+
+    await Plan.findByIdAndDelete(id);
+
+    return response.status(204).end();
+  } catch (error) {
+    // istanbul ignore next: This line is excluded from test coverage
+    return response.status(500).error(error);
+  }
+};
+
+module.exports = { getAll, detail, save, myPlan, update, destroy };
