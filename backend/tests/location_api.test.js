@@ -15,7 +15,7 @@ beforeAll(() => {
 describe('Locations API', () => {
   test('returns locations as JSON', async () => {
     await api
-      .get('/api/locations')
+      .get('/api/locations?pageSize=20')
       .expect(200)
       .expect('Content-Type', /application\/json/);
   });
