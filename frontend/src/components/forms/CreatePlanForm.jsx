@@ -41,7 +41,6 @@ const CreatePlanForm = ({ isOpen, onClose }) => {
   const navigate = useNavigate();
 
   const onSubmit = (data) => {
-    console.log(data, "SUBMIT");
     navigate("create", {
       state: {
         data,

@@ -11,8 +11,9 @@ import {
 import { Link, NavLink } from "react-router-dom";
 import React from "react";
 import { CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
-import { useAuth } from "./hooks/useAuth";
+import { useAuth } from "../hooks/useAuth";
 import Logout from "./Logout";
+import MyButton from "./MyButton";
 
 const data = [
   {
@@ -80,38 +81,11 @@ export default function Header() {
           {user === null && (
             <>
               <Link to={"/sign-in"}>
-                <Button
-                  bgColor="tripl-new.orange"
-                  color="tripl-new.light"
-                  transitionDuration="0.2s"
-                  boxShadow="lg"
-                  transitionTimingFunction="ease-in-out"
-                  _hover={{
-                    transform: "translateY(10%)",
-                    transitionDuration: "0.2s",
-                    transitionTimingFunction: "ease-in-out",
-                  }}
-                >
-                  Sign In
-                </Button>
+                <MyButton>Sign In</MyButton>
               </Link>
 
               <Link to={"/sign-up"}>
-                <Button
-                  border="1px solid"
-                  bgColor="tripl-new.light"
-                  color="tripl-new.orange"
-                  boxShadow="lg"
-                  transitionDuration="0.2s"
-                  transitionTimingFunction="ease-in-out"
-                  _hover={{
-                    transform: "translateY(10%)",
-                    transitionDuration: "0.2s",
-                    transitionTimingFunction: "ease-in-out",
-                  }}
-                >
-                  Sign Up
-                </Button>
+                <MyButton variant="outline">Sign Up</MyButton>
               </Link>
             </>
           )}

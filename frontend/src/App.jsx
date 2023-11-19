@@ -15,30 +15,38 @@ import ExploreDetail from "./routes/ExploreDetail";
 import Planner from "./routes/Planner";
 import SavePlanDetail from "./components/forms/SavePlanDetail";
 import Cookies from "js-cookie";
-import { useAuth } from "./components/hooks/useAuth";
-import IsLoggedIn from "./components/middleware/IsLoggedIn";
-import IsNotLoggedIn from "./components/middleware/IsNotLoggedIn";
+import { useAuth } from "./hooks/useAuth";
+import IsLoggedIn from "./middleware/IsLoggedIn";
+import IsNotLoggedIn from "./middleware/IsNotLoggedIn";
+import { LocationsContextProvider } from "./context/LocationsContext";
+import { ModalProvider } from "./context/ModalContext";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route element={<RootLayout />}>
-      <Route index element={<Home />} />
-      <Route path="about" element={<Test />} />
-      <Route element={<IsNotLoggedIn />}>
-        <Route path="sign-in" element={<SignIn />} />
-        <Route path="sign-up" element={<SignUp />} />
-      </Route>
-      <Route path="explore">
-        <Route index element={<Explore />} />
-        <Route path=":id" element={<ExploreDetail />} />
-      </Route>
-      <Route path="planner">
-        <Route element={<IsLoggedIn />}>
-          <Route index element={<Planner />} />
-          <Route path="create" element={<SavePlanDetail />} />
+    <>
+      {/* WITH LAYOUT */}
+      <Route element={<RootLayout />}>
+        <Route index element={<Home />} />
+        <Route path="about" element={<Test />} />
+        <Route element={<IsNotLoggedIn />}>
+          <Route path="sign-in" element={<SignIn />} />
+          <Route path="sign-up" element={<SignUp />} />
+        </Route>
+        <Route path="explore">
+          <Route index element={<Explore />} />
+          <Route path=":id" element={<ExploreDetail />} />
+        </Route>
+        <Route path="planner">
+          <Route element={<IsLoggedIn />}>
+            <Route index element={<Planner />} />
+          </Route>
         </Route>
       </Route>
-    </Route>
+      {/* NO LAYOUT */}
+      <Route element={<IsLoggedIn />}>
+        <Route path="planner/create" element={<SavePlanDetail />} />
+      </Route>
+    </>
   )
 );
 
@@ -51,7 +59,13 @@ const App = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  return <RouterProvider router={router} />;
+  return (
+    <LocationsContextProvider>
+      <ModalProvider>
+        <RouterProvider router={router} />
+      </ModalProvider>
+    </LocationsContextProvider>
+  );
 };
 
 export default App;

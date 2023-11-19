@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Location = require('../models/location');
 
 const getAll = async (request, response) => {
-  const { type, page, pageSize, search } = request.query;
+  const { type, page, pageSize, search, mostViewed } = request.query;
   try {
     let query = type ? Location.find({ type }) : Location.find({});
 
@@ -11,6 +11,10 @@ const getAll = async (request, response) => {
         { name: { $regex: new RegExp(search, 'i') } },
         { address: { $regex: new RegExp(search, 'i') } },
       ]);
+    }
+
+    if (mostViewed) {
+      query = query.sort({ reviewCount: -1 });
     }
 
     if (page !== undefined && pageSize !== undefined) {
