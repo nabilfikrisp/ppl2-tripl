@@ -28,7 +28,6 @@ export const ModalProvider = ({ children }) => {
   };
 
   const hideModal = () => {
-    setModalContent({});
     onClose();
   };
 
@@ -45,10 +44,7 @@ export const ModalProvider = ({ children }) => {
           <ModalHeader>{modalContent.header}</ModalHeader>
           {modalContent.closeButton && <ModalCloseButton />}
           <ModalBody>{modalContent.body}</ModalBody>
-          <ModalFooter>
-            {modalContent.footer}
-            <Button onClick={hideModal}>Close</Button>
-          </ModalFooter>
+          <ModalFooter>{modalContent.footer}</ModalFooter>
         </ModalContent>
       </Modal>
     </ModalContext.Provider>

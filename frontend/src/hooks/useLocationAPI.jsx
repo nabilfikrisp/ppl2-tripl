@@ -4,13 +4,17 @@ import axios from "axios";
 import { debounce } from "lodash";
 import { BASE_ENDPOINT } from "../api";
 
-const useLocationAPI = () => {
+const useLocationAPI = ({
+  mostViewed = true,
+  pageSize,
+  debounceTime = 300,
+}) => {
   const [filterConfig, setFilterConfig] = useState({
     page: 1,
-    pageSize: 5,
+    pageSize: pageSize,
     type: undefined,
     search: undefined,
-    mostViewed: true,
+    mostViewed: mostViewed,
   });
 
   const fetchLocations = async ({ pageParam = 1 }) => {
@@ -42,7 +46,7 @@ const useLocationAPI = () => {
 
   const handleSearch = debounce((searchValue) => {
     setFilterConfig({ ...filterConfig, search: searchValue });
-  }, 300);
+  }, debounceTime);
 
   return {
     filterConfig,

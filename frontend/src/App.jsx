@@ -23,7 +23,7 @@ import { ModalProvider } from "./context/ModalContext";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <>
+    <Route>
       {/* WITH LAYOUT */}
       <Route element={<RootLayout />}>
         <Route index element={<Home />} />
@@ -46,7 +46,7 @@ const router = createBrowserRouter(
       <Route element={<IsLoggedIn />}>
         <Route path="planner/create" element={<SavePlanDetail />} />
       </Route>
-    </>
+    </Route>
   )
 );
 

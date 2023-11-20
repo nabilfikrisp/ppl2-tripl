@@ -8,5 +8,12 @@ export const usePlanLocations = () => {
     setLocations([...locations, newLocation]);
   };
 
-  return { locations, setLocations, addNewLocation };
+  const deleteLocationById = (locationId) => {
+    const temp = locations.filter(
+      (planLocation) => planLocation.location.id !== locationId
+    );
+    setLocations(temp);
+  };
+
+  return { locations, setLocations, addNewLocation, deleteLocationById };
 };

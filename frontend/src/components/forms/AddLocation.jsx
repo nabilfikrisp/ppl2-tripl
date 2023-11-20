@@ -1,11 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
-import { BASE_ENDPOINT } from "../../api";
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import {
   Box,
   Flex,
-  Image,
   Input,
   Modal,
   ModalBody,
@@ -17,16 +13,17 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
-import { debounce } from "lodash";
 import { SearchIcon } from "@chakra-ui/icons";
 import { ELocationType } from "../../utils/helpers/location.helper";
-import { AiFillStar } from "react-icons/ai";
 import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
 import MyButton from "../MyButton";
 import { usePlanLocations } from "../../hooks/usePlanLocations";
 import { useModal } from "../../context/ModalContext";
 import { useTimeRange } from "../../hooks/useTimeRange";
 import { Icon } from "leaflet";
+import LocationsOnPlanner from "../LocationsOnPlanner";
+import useLocationAPI from "../../hooks/useLocationAPI";
+import { AiFillStar } from "react-icons/ai";
 
 const SetViewOnClick = ({ coords }) => {
   const map = useMap();
@@ -77,40 +74,50 @@ const MyMarker = ({ selected, location }) => {
       icon={icons[location.type]}
     >
       <Popup>
-        <Text fontWeight="bold" fontSize="lg">
-          {location.name}
-        </Text>
-        <Text>{location.address || "No address about this place"}</Text>
-        <MyButton
-          onClick={() => {
-            // addNewLocation(location);
-            openTimeRangeModal();
-            // hideModal();
-          }}
-        >
-          Add to Plan
-        </MyButton>
+        <Box>
+          <Text fontWeight="bold" fontSize="lg">
+            {location.name}
+          </Text>
+          <Text>{location.address || "No address about this place"}</Text>
+          <Flex gap="10px" alignItems="center">
+            <Flex color="tripl-new.orange" alignItems="center" gap="4px">
+              <AiFillStar />
+              <Text fontSize="sm" fontWeight="bold">
+                {location.rating}
+              </Text>
+            </Flex>
+            <Text fontSize="sm" fontWeight="medium" color="gray.500">
+              {location.reviewCount} reviews
+            </Text>
+          </Flex>
+          <MyButton
+            onClick={() => {
+              openTimeRangeModal();
+            }}
+          >
+            Add to Plan
+          </MyButton>
+          <Modal isOpen={isOpen} onClose={onClose} size="lg" isCentered>
+            <ModalOverlay />
+            <ModalContent>
+              <ModalHeader>Tentukan Jam Rencanamu</ModalHeader>
+              <ModalCloseButton />
+              <ModalBody>{renderTimeRange()}</ModalBody>
 
-        <Modal isOpen={isOpen} onClose={onClose} size="lg" isCentered>
-          <ModalOverlay />
-          <ModalContent>
-            <ModalHeader>Tentukan Jam Rencanamu</ModalHeader>
-            <ModalCloseButton />
-            <ModalBody>{renderTimeRange()}</ModalBody>
-
-            <ModalFooter>
-              <MyButton
-                onClick={() => {
-                  hideModal();
-                  addNewLocation({ location, timeRange });
-                }}
-                isDisabled={!timeRange}
-              >
-                Add
-              </MyButton>
-            </ModalFooter>
-          </ModalContent>
-        </Modal>
+              <ModalFooter>
+                <MyButton
+                  onClick={() => {
+                    hideModal();
+                    addNewLocation({ location, timeRange });
+                  }}
+                  isDisabled={!timeRange}
+                >
+                  Add
+                </MyButton>
+              </ModalFooter>
+            </ModalContent>
+          </Modal>
+        </Box>
       </Popup>
     </Marker>
   );
@@ -122,41 +129,21 @@ const AddLocation = () => {
     lng: 107.613144,
   };
 
-  const [filterConfig, setFilterConfig] = useState({
-    page: 1,
-    pageSize: 50,
-    type: undefined,
-    search: undefined,
-    mostViewed: true,
-  });
-
   const [mapCenter, setMapCenter] = useState(BANDUNG_CENTER_COORDS);
   const [selectedLocationId, setSelectedLocationId] = useState();
 
-  const fetchAllLocations = async () => {
-    try {
-      const response = await axios.get(`${BASE_ENDPOINT}/locations/`, {
-        params: filterConfig,
-      });
-      if (response.status !== 200) {
-        throw new Error(`Request failed with status ${response.status}`);
-      }
-      console.log(response.data, "RESPONSE");
-      return response.data;
-    } catch (error) {
-      return null;
-    }
-  };
-
-  const { data, error, isError, isLoading } = useQuery({
-    queryKey: ["planLocations", filterConfig],
-    queryFn: () => fetchAllLocations(),
-    keepPreviousData: true,
-  });
-  console.log(data, "DATA");
-  const handleSearch = debounce((searchValue) => {
-    setFilterConfig({ ...filterConfig, search: searchValue });
-  }, 400);
+  const {
+    filterConfig,
+    setFilterConfig,
+    data,
+    isLoading,
+    isError,
+    fetchNextPage,
+    isFetchingNextPage,
+    hasNextPage,
+    error,
+    handleSearch,
+  } = useLocationAPI({ mostViewed: true, pageSize: 50, debounceTime: 400 });
 
   return (
     <Flex gap="10px" h="83vh">
@@ -245,91 +232,17 @@ const AddLocation = () => {
                 ))}
               </Flex>
             </Box>
-            {isLoading && <Box>Loading...</Box>}
-            {isError && <Box>Error: {error}</Box>}
-            {data && (
-              <Flex flexDir="column" justifyContent="center" gap="50px">
-                {data.map((location) => (
-                  <Flex
-                    // as={Link}
-                    id="below"
-                    key={location.placeId}
-                    flexDir={{ base: "column", md: "row" }}
-                    borderRadius="20px"
-                    overflow="hidden"
-                    height={{ base: "fit-content" }}
-                    w="full"
-                    // to={`${location.id}`}
-                  >
-                    <Box
-                      minW="30%"
-                      maxW={{ base: "full", md: "30%" }}
-                      minH={{ base: "40%", md: "full" }}
-                      h="200px"
-                    >
-                      <Image
-                        src={location.photo}
-                        height="full"
-                        w="full"
-                        fallbackSrc="/img_fallback.jpg"
-                        fallbackStrategy="onError"
-                        referrerPolicy="no-referrer"
-                        objectFit="cover"
-                      />
-                    </Box>
-                    <Flex
-                      flexGrow="1"
-                      color="tripl-new.black"
-                      bgColor="tripl-new.cream"
-                      px="30px"
-                      flexDir="column"
-                      gap="10px"
-                      py="30px"
-                    >
-                      <Text
-                        fontWeight="bold"
-                        fontSize={{ base: "24px", md: "30px" }}
-                        textOverflow="ellipsis"
-                      >
-                        {location.name}
-                      </Text>
-                      <Flex gap="10px" alignItems="center">
-                        <Flex
-                          color="tripl-new.orange"
-                          alignItems="center"
-                          gap="4px"
-                        >
-                          <AiFillStar />
-                          <Text fontSize="sm" fontWeight="bold">
-                            {location.rating}
-                          </Text>
-                        </Flex>
-                        <Text
-                          fontSize="sm"
-                          fontWeight="medium"
-                          color="gray.500"
-                        >
-                          {location.reviewCount} reviews
-                        </Text>
-                      </Flex>
-                      <MyButton
-                        onClick={() => {
-                          setMapCenter({
-                            lat: location.latitude,
-                            lng: location.longitude,
-                          });
-                          setSelectedLocationId(location.id);
-                        }}
-                        mt={{ md: "20px" }}
-                      >
-                        Lihat di Map
-                      </MyButton>
-                    </Flex>
-                  </Flex>
-                ))}
-              </Flex>
-            )}
-            {!data && !isLoading && <Text>Location Not Found</Text>}
+            <LocationsOnPlanner
+              isError={isError}
+              error={error}
+              isLoading={isLoading}
+              data={data}
+              hasNextPage={hasNextPage}
+              fetchNextPage={fetchNextPage}
+              isFetchingNextPage={isFetchingNextPage}
+              setMapCenter={setMapCenter}
+              setSelectedLocationId={setSelectedLocationId}
+            />
           </Flex>
         </Flex>
       </Flex>
@@ -349,12 +262,16 @@ const AddLocation = () => {
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
             {data &&
-              data.map((location, index) => (
-                <MyMarker
-                  location={location}
-                  key={index}
-                  selected={location.id === selectedLocationId}
-                />
+              data.pages.map((page, pageIndex) => (
+                <React.Fragment key={pageIndex}>
+                  {page.map((location, index) => (
+                    <MyMarker
+                      location={location}
+                      key={index}
+                      selected={location.id === selectedLocationId}
+                    />
+                  ))}
+                </React.Fragment>
               ))}
             <SetViewOnClick coords={mapCenter} />
           </MapContainer>

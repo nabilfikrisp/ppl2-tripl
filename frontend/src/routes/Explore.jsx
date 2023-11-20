@@ -1,10 +1,6 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
-import React, { useState } from "react";
-import axios from "axios";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import React from "react";
 import { ELocationType } from "../utils/helpers/location.helper";
-import { BASE_ENDPOINT } from "../api";
-import { debounce } from "lodash";
 import FilterLabel from "../components/FilterLabel";
 import SearchInput from "../components/SearchInput";
 import Locations from "../components/Locations";
