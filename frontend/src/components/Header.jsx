@@ -144,7 +144,7 @@ export default function Header() {
               top: isDrawerOpen ? "60px" : "-1000px",
               transition: "all .2s",
             }}
-            bgColor="tripl.green-200"
+            bgColor="tripl-new.light"
             pt={5}
             pb={3}
             px={8}

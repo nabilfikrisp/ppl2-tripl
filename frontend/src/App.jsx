@@ -20,6 +20,7 @@ import IsLoggedIn from "./middleware/IsLoggedIn";
 import IsNotLoggedIn from "./middleware/IsNotLoggedIn";
 import { LocationsContextProvider } from "./context/LocationsContext";
 import { ModalProvider } from "./context/ModalContext";
+import PlanDetail from "./routes/PlanDetail";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -39,6 +40,7 @@ const router = createBrowserRouter(
         <Route path="planner">
           <Route element={<IsLoggedIn />}>
             <Route index element={<Planner />} />
+            <Route path=":id" element={<PlanDetail />} />
           </Route>
         </Route>
       </Route>

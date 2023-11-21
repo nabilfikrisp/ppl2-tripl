@@ -28,7 +28,7 @@ import { AiFillStar } from "react-icons/ai";
 const SetViewOnClick = ({ coords }) => {
   const map = useMap();
   map.closePopup();
-  map.flyTo(coords);
+  map.flyTo({ lat: coords.lat + 0.006, lng: coords.lng });
 
   return null;
 };
@@ -73,13 +73,19 @@ const MyMarker = ({ selected, location }) => {
       ref={ref}
       icon={icons[location.type]}
     >
-      <Popup>
+      <Popup maxWidth="200">
         <Box>
           <Text fontWeight="bold" fontSize="lg">
             {location.name}
           </Text>
-          <Text>{location.address || "No address about this place"}</Text>
-          <Flex gap="10px" alignItems="center">
+          <Text display={{ base: "none", md: "block" }}>
+            {location.address || "No address about this place"}
+          </Text>
+          <Flex
+            gap="10px"
+            alignItems="center"
+            display={{ base: "none", md: "flex" }}
+          >
             <Flex color="tripl-new.orange" alignItems="center" gap="4px">
               <AiFillStar />
               <Text fontSize="sm" fontWeight="bold">
@@ -94,6 +100,7 @@ const MyMarker = ({ selected, location }) => {
             onClick={() => {
               openTimeRangeModal();
             }}
+            size={{ base: "sm", md: "md" }}
           >
             Add to Plan
           </MyButton>
@@ -146,8 +153,8 @@ const AddLocation = () => {
   } = useLocationAPI({ mostViewed: true, pageSize: 50, debounceTime: 400 });
 
   return (
-    <Flex gap="10px" h="83vh">
-      <Flex w="50%">
+    <Flex gap="10px" h="83vh" flexDir={{ base: "column", md: "row" }}>
+      <Flex w={{ md: "50%" }} h={{ base: "65%", md: "full" }}>
         <Flex
           width="full"
           flexDir="column"
@@ -159,8 +166,9 @@ const AddLocation = () => {
             justifyContent="center"
             flexDir="column"
             alignItems="center"
-            px={{ base: "20px", md: "50px" }}
-            gap="50px"
+            px={{ md: "20px" }}
+            pe={{ base: "10px", md: "30px" }}
+            gap={{ base: "20px", md: "50px" }}
           >
             <Box w="full" maxW="1000px">
               <Flex w="full" gap="20px">
@@ -246,7 +254,7 @@ const AddLocation = () => {
           </Flex>
         </Flex>
       </Flex>
-      <Flex w="50%">
+      <Flex w={{ md: "50%" }} flexGrow="1">
         <Box overflow="hidden" w="full">
           <MapContainer
             center={mapCenter}

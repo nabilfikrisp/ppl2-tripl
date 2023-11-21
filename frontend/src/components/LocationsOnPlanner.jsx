@@ -34,12 +34,15 @@ const LocationsOnPlanner = ({
       gap="50px"
     >
       {data && (
-        <Flex flexDir="column" justifyContent="center" gap="50px">
+        <Flex
+          flexDir="column"
+          justifyContent="center"
+          gap={{ base: "30px", md: "50px" }}
+        >
           {data.pages.map((page, pageIndex) => (
             <React.Fragment key={pageIndex}>
               {page.map((location) => (
                 <Flex
-                  // as={Link}
                   id="below"
                   key={location.placeId}
                   flexDir={{ base: "column", md: "row" }}
@@ -47,13 +50,12 @@ const LocationsOnPlanner = ({
                   overflow="hidden"
                   height={{ base: "fit-content" }}
                   w="full"
-                  // to={`${location.id}`}
                 >
                   <Box
                     minW="30%"
                     maxW={{ base: "full", md: "30%" }}
-                    minH={{ base: "40%", md: "full" }}
-                    h="200px"
+                    minH={{ base: "fit-content", md: "full" }}
+                    h={{ base: "100px", md: "200px" }}
                   >
                     <Image
                       src={location.photo}
@@ -69,14 +71,15 @@ const LocationsOnPlanner = ({
                     flexGrow="1"
                     color="tripl-new.black"
                     bgColor="tripl-new.cream"
-                    px="30px"
+                    px={{ base: "20px", md: "30px" }}
                     flexDir="column"
                     gap="10px"
-                    py="30px"
+                    py={{ base: "20px", md: "30px" }}
+                    pt={{ base: "10px", md: "30px" }}
                   >
                     <Text
                       fontWeight="bold"
-                      fontSize={{ base: "24px", md: "30px" }}
+                      fontSize={{ base: "20px", md: "30px" }}
                       textOverflow="ellipsis"
                     >
                       {location.name}
@@ -85,8 +88,8 @@ const LocationsOnPlanner = ({
                     <Flex gap="10px" alignItems="center">
                       <Image
                         src={`/${location.type}-icon.svg`}
-                        w="30px"
-                        h="30px"
+                        w={{ base: "20px", md: "30px" }}
+                        h={{ base: "20px", md: "30px" }}
                       />
                       <Flex
                         color="tripl-new.orange"
@@ -111,6 +114,7 @@ const LocationsOnPlanner = ({
                         setSelectedLocationId(location.id);
                       }}
                       mt={{ md: "20px" }}
+                      size={{ base: "sm", md: "md" }}
                     >
                       Lihat di Map
                     </MyButton>

@@ -8,13 +8,13 @@ const useLocationAPI = ({
   mostViewed = true,
   pageSize,
   debounceTime = 300,
-}) => {
+} = {}) => {
   const [filterConfig, setFilterConfig] = useState({
     page: 1,
     pageSize: pageSize,
     type: undefined,
     search: undefined,
-    mostViewed: mostViewed,
+    mostViewed,
   });
 
   const fetchLocations = async ({ pageParam = 1 }) => {

@@ -8,6 +8,7 @@ const MyButton = ({
   mt,
   width = "full",
   isDisabled = false,
+  size = "md",
 }) => {
   const isOutline = variant === "outline";
 
@@ -28,6 +29,7 @@ const MyButton = ({
       }}
       onClick={onClick}
       isDisabled={isDisabled}
+      size={size}
     >
       {children}
     </Button>

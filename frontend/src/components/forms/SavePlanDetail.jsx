@@ -79,11 +79,12 @@ const SavePlanDetail = () => {
         bgColor="tripl-new.cream"
         maxW="1000px"
         mx="auto"
-        px="50px"
+        px={{ base: "10px", md: "50px" }}
         py="20px"
         borderBottomRadius="10px"
         gap="20px"
         w="full"
+        flexWrap={{ base: "wrap", md: "nowrap" }}
       >
         <Box
           onClick={() => {
@@ -102,8 +103,17 @@ const SavePlanDetail = () => {
         >
           <IoIosArrowBack size="50px" />
         </Box>
-        <Flex flexGrow="1" flexDir="column" gap="10px" maxW="80%">
-          <Text color="tripl-new.orange" fontSize="40px" fontWeight="bold">
+        <Flex
+          flexGrow="1"
+          flexDir="column"
+          gap="10px"
+          maxW={{ base: "70%", sm: "80%" }}
+        >
+          <Text
+            color="tripl-new.orange"
+            fontSize={{ base: "30px", md: "40px" }}
+            fontWeight="bold"
+          >
             Trip {previousData.title}
           </Text>
           <Text>{dayjs(previousData.date).format("DD MMMM YYYY")}</Text>
@@ -111,6 +121,7 @@ const SavePlanDetail = () => {
         </Flex>
         <Button
           placeSelf="end"
+          ms={{ base: "70px", md: 0 }}
           bgColor="tripl-new.orange"
           color="tripl-new.light"
           transitionDuration="0.2s"
@@ -130,7 +141,7 @@ const SavePlanDetail = () => {
           Save
         </Button>
       </Flex>
-      <Box maxW="1000px" mx="auto" mt="10px">
+      <Box maxW="1000px" mx="auto" mt="20px" px={{ base: "20px", md: 0 }}>
         <Button
           bgColor="tripl-new.orange"
           color="tripl-new.light"
@@ -151,7 +162,7 @@ const SavePlanDetail = () => {
             List Perjalanmu
           </Text>
           {locations.map((locationPlan, index) => (
-            <Flex gap="20px" key={index}>
+            <Flex gap="20px" key={index} px={{ md: "20px" }}>
               <PlanStepper index={index} arrLen={locations.length} />
               <Box w="full" py="25px">
                 <Flex gap="20px" justifyContent="space-between" mb="10px">
@@ -182,7 +193,7 @@ const SavePlanDetail = () => {
                   flexDir={{ base: "column", md: "row" }}
                   borderRadius="10px"
                   overflow="hidden"
-                  height={{ base: "600px", md: "300px" }}
+                  height={{ base: "fit-content", md: "300px" }}
                   w="full"
                   maxW="1000px"
                 >
@@ -205,19 +216,23 @@ const SavePlanDetail = () => {
                     flexGrow="1"
                     color="tripl-new.black"
                     bgColor="tripl-new.cream"
-                    px="30px"
+                    px={{ base: "15px", md: "30px" }}
                     flexDir="column"
                     gap="10px"
                     py={{ base: "15px", md: "30px" }}
                   >
                     <Text
                       fontWeight="bold"
-                      fontSize={{ base: "24px", md: "30px" }}
+                      fontSize={{ base: "20px", md: "30px" }}
                       textOverflow="ellipsis"
                     >
                       {locationPlan.location.name}
                     </Text>
-                    <Flex gap="10px" alignItems="center">
+                    <Flex
+                      gap="10px"
+                      alignItems="center"
+                      fontSize={{ base: "xs", md: "sm" }}
+                    >
                       <Image
                         src={`/${locationPlan.location.type}-icon.svg`}
                         w="25px"
@@ -229,15 +244,19 @@ const SavePlanDetail = () => {
                         gap="4px"
                       >
                         <AiFillStar />
-                        <Text fontSize="sm" fontWeight="bold">
+                        <Text fontWeight="bold">
                           {locationPlan.location.rating}
                         </Text>
                       </Flex>
-                      <Text fontSize="sm" fontWeight="medium" color="gray.500">
+                      <Text fontWeight="medium" color="gray.500">
                         {locationPlan.location.reviewCount} reviews
                       </Text>
                     </Flex>
-                    <Text overflow="hidden" noOfLines={{ base: "6", md: "4" }}>
+                    <Text
+                      overflow="hidden"
+                      noOfLines={{ base: "3", md: "4" }}
+                      fontSize={{ base: "sm", md: "lg" }}
+                    >
                       {locationPlan.location.description ||
                         "No description about this place"}
                     </Text>
