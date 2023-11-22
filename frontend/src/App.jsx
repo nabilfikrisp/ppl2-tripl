@@ -21,6 +21,7 @@ import IsNotLoggedIn from "./middleware/IsNotLoggedIn";
 import { LocationsContextProvider } from "./context/LocationsContext";
 import { ModalProvider } from "./context/ModalContext";
 import PlanDetail from "./routes/PlanDetail";
+import MyProfile from "./routes/MyProfile";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -29,6 +30,7 @@ const router = createBrowserRouter(
       <Route element={<RootLayout />}>
         <Route index element={<Home />} />
         <Route path="about" element={<Test />} />
+        <Route path="my-profile" element={<MyProfile />} />
         <Route element={<IsNotLoggedIn />}>
           <Route path="sign-in" element={<SignIn />} />
           <Route path="sign-up" element={<SignUp />} />

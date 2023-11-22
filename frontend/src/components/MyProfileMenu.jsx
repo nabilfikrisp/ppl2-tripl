@@ -1,5 +1,6 @@
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import {
+  Box,
   Button,
   Menu,
   MenuButton,
@@ -9,6 +10,7 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import Logout from "./Logout";
+import { Link } from "react-router-dom";
 
 const MyProfileMenu = ({ username }) => {
   return (
@@ -24,9 +26,11 @@ const MyProfileMenu = ({ username }) => {
         Hi, {username}!
       </MenuButton>
       <MenuList>
-        <MenuItem>My Profile</MenuItem>
+        <MenuItem fontWeight="600" as={Link} to="/my-profile">
+          My Profile
+        </MenuItem>
         <MenuDivider />
-        <MenuItem>
+        <MenuItem as={Box}>
           <Logout />
         </MenuItem>
       </MenuList>

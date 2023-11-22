@@ -35,4 +35,11 @@ const detail = async (request, response) => {
   }
 };
 
-module.exports = { getAll, detail };
+const myDetail = async (request, response) => {
+  const user = request.user;
+  const userQuery = User.findById(user.id);
+  const userData = await userQuery.exec();
+  return response.status(200).json(userData);
+};
+
+module.exports = { getAll, detail, myDetail };
