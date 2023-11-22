@@ -23,10 +23,10 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
-import useAlert from "../components/hooks/useAlert";
+import useAlert from "../hooks/useAlert";
 import { BASE_ENDPOINT } from "../api";
 import axios from "axios";
-import { useAuth } from "../components/hooks/useAuth";
+import { useAuth } from "../hooks/useAuth";
 import { useGoogleLogin } from "@react-oauth/google";
 
 const signUpSchema = z.object({

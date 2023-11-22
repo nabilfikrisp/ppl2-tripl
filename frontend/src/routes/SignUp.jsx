@@ -26,9 +26,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import axios from "axios";
 import { BASE_ENDPOINT } from "../api";
-import useAlert from "../components/hooks/useAlert";
+import useAlert from "../hooks/useAlert";
 import { useGoogleLogin } from "@react-oauth/google";
-import { useAuth } from "../components/hooks/useAuth";
+import { useAuth } from "../hooks/useAuth";
 
 const signUpSchema = z
   .object({

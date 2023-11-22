@@ -5,10 +5,10 @@ import "./global.css";
 import theme from "./theme.jsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "leaflet/dist/leaflet.css";
-import { AuthContextProvider } from "./components/context/Auth.jsx";
+import { AuthContextProvider } from "./context/Auth.jsx";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import App from "./App.jsx";
-import { GOOGLE_CLIENT_ID } from "./components/helper/config.js";
+import { GOOGLE_CLIENT_ID } from "./helper/config.js";
 
 const queryClient = new QueryClient();
 

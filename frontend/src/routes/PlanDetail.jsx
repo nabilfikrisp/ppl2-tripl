@@ -1,3 +1,6 @@
+import { useNavigate, useParams } from "react-router-dom";
+import { useModal } from "../context/ModalContext";
+import { usePlanLocations } from "../hooks/usePlanLocations";
 import {
   AlertDialog,
   AlertDialogBody,
@@ -12,27 +15,34 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
-import { Navigate, useLocation, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import AddLocation from "../components/forms/AddLocation";
 import { IoIosArrowBack } from "react-icons/io";
-import { FaPlus } from "react-icons/fa6";
 import dayjs from "dayjs";
-import AddLocation from "./AddLocation";
-import { usePlanLocations } from "../../hooks/usePlanLocations";
-import { useModal } from "../../context/ModalContext";
-import PlanStepper from "../PlanStepper";
-import { AiFillStar } from "react-icons/ai";
+import { FaPlus } from "react-icons/fa6";
+import PlanStepper from "../components/PlanStepper";
 import { DeleteIcon } from "@chakra-ui/icons";
-import { useCreatePlan } from "../../hooks/useCreatePlan";
+import { AiFillStar } from "react-icons/ai";
+import { useGetPlanDetail } from "../hooks/useGetPlanDetail";
+import useAlert from "../hooks/useAlert";
+import { usePutPlan } from "../hooks/usePutPlan";
+import EditPlanForm from "../components/forms/EditPlanForm";
 
-const SavePlanDetail = () => {
-  const params = useLocation();
+const PlanDetail = () => {
+  const { id: planId } = useParams();
   const navigate = useNavigate();
-  const previousData = params.state?.data || null;
+  const {
+    data: planDetail,
+    isError: isPlanDetailError,
+    isLoading: isPlanDetailLoading,
+    isSuccess: isPlanDetailSuccess,
+  } = useGetPlanDetail(planId);
   const { showModal, hideModal } = useModal();
+  const { handleError } = useAlert();
   const {
     locations,
     deleteLocationById,
+    setLocations,
     reset: resetPlan,
   } = usePlanLocations();
   const {
@@ -40,16 +50,34 @@ const SavePlanDetail = () => {
     onOpen: alertOnOpen,
     onClose: alertOnClose,
   } = useDisclosure();
+  const {
+    isOpen: formIsOpen,
+    onOpen: formOnOpen,
+    onClose: formOnClose,
+  } = useDisclosure();
   const alertCancelRef = React.useRef();
   const [deletedId, setDeletedId] = useState("");
-  const {
-    mutate: savePlan,
-    isLoading: isCreatePlanLoading,
-    isSuccess: isCreatePlanSuccess,
-  } = useCreatePlan();
+  const [planDesc, setPlanDesc] = useState({
+    title: "",
+    date: "",
+    description: "",
+  });
+  const { mutate: putPlan, isLoading: isPutPlanLoading } = usePutPlan(planId);
 
-  if (previousData === null) {
-    return <Navigate state={{ openModal: true }} to="/planner" />;
+  useEffect(() => {
+    if (isPlanDetailSuccess) {
+      setLocations(planDetail.locations);
+      setPlanDesc({
+        title: planDetail.title,
+        date: planDetail.date,
+        description: planDetail.description,
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isPlanDetailSuccess]);
+
+  if (isPlanDetailError) {
+    handleError("Error fetching data, please refresh!");
   }
 
   const onSubmit = () => {
@@ -59,13 +87,12 @@ const SavePlanDetail = () => {
         timeRange: planLocation.timeRange,
       };
     });
-    const requestBody = { ...previousData, locations: locationsRequestBody };
-    savePlan(requestBody);
+    const requestBody = { ...planDesc, locations: locationsRequestBody };
+    putPlan(requestBody);
   };
 
-  if (isCreatePlanSuccess) {
-    resetPlan();
-    navigate("/planner");
+  if (isPlanDetailLoading) {
+    return <Text>Loading...</Text>;
   }
 
   const openAddLocationModal = () => {
@@ -120,10 +147,12 @@ const SavePlanDetail = () => {
             fontSize={{ base: "30px", md: "40px" }}
             fontWeight="bold"
           >
-            Trip {previousData.title}
+            Trip {planDesc.title || planDetail.title}
           </Text>
-          <Text>{dayjs(previousData.date).format("DD MMMM YYYY")}</Text>
-          <Text>{previousData.description}</Text>
+          <Text>
+            {dayjs(planDesc.date || planDetail.date).format("DD MMMM YYYY")}
+          </Text>
+          <Text>{planDesc.description || planDetail.description || ""}</Text>
         </Flex>
         <Button
           placeSelf="end"
@@ -142,27 +171,48 @@ const SavePlanDetail = () => {
           onClick={() => onSubmit()}
           w="fit-content"
           isDisabled={locations.length === 0}
-          isLoading={isCreatePlanLoading}
+          isLoading={isPutPlanLoading}
         >
           Save
         </Button>
       </Flex>
       <Box maxW="1000px" mx="auto" mt="20px" px={{ base: "20px", lg: 0 }}>
-        <Button
-          bgColor="tripl-new.orange"
-          color="tripl-new.light"
-          transitionDuration="0.2s"
-          boxShadow="lg"
-          transitionTimingFunction="ease-in-out"
-          _hover={{
-            transform: "translateY(10%)",
-            transitionDuration: "0.2s",
-            transitionTimingFunction: "ease-in-out",
-          }}
-          onClick={() => openAddLocationModal()}
-        >
-          <FaPlus /> Tambah Destinasi
-        </Button>
+        <Flex gap="20px">
+          <Button
+            bgColor="tripl-new.orange"
+            color="tripl-new.light"
+            transitionDuration="0.2s"
+            boxShadow="lg"
+            transitionTimingFunction="ease-in-out"
+            _hover={{
+              transform: "translateY(10%)",
+              transitionDuration: "0.2s",
+              transitionTimingFunction: "ease-in-out",
+            }}
+            onClick={() => openAddLocationModal()}
+          >
+            <FaPlus /> Tambah Destinasi
+          </Button>
+          <Button
+            bgColor="yellow.400"
+            color="black.400"
+            transitionDuration="0.2s"
+            boxShadow="lg"
+            transitionTimingFunction="ease-in-out"
+            _hover={{
+              transform: "translateY(10%)",
+              transitionDuration: "0.2s",
+              transitionTimingFunction: "ease-in-out",
+            }}
+            size="md"
+            onClick={() => {
+              formOnOpen();
+            }}
+            w="fit-content"
+          >
+            Edit Detail
+          </Button>
+        </Flex>
         <Flex flexDir="column" mt="20px">
           <Text fontSize="3xl" fontWeight="bold" color="tripl-new.orange">
             List Perjalanmu
@@ -188,7 +238,6 @@ const SavePlanDetail = () => {
                     onClick={() => {
                       alertOnOpen();
                       setDeletedId(locationPlan.location.id);
-                      // deleteLocationById(locationPlan.location.id);
                     }}
                   >
                     <DeleteIcon />
@@ -313,8 +362,13 @@ const SavePlanDetail = () => {
           </AlertDialogContent>
         </AlertDialogOverlay>
       </AlertDialog>
+      <EditPlanForm
+        isOpen={formIsOpen}
+        onClose={formOnClose}
+        setDetail={setPlanDesc}
+      />
     </Box>
   );
 };
 
-export default SavePlanDetail;
+export default PlanDetail;
