@@ -30,7 +30,11 @@ const SavePlanDetail = () => {
   const navigate = useNavigate();
   const previousData = params.state?.data || null;
   const { showModal, hideModal } = useModal();
-  const { locations, deleteLocationById } = usePlanLocations();
+  const {
+    locations,
+    deleteLocationById,
+    reset: resetPlan,
+  } = usePlanLocations();
   const {
     isOpen: alertIsOpen,
     onOpen: alertOnOpen,
@@ -60,6 +64,7 @@ const SavePlanDetail = () => {
   };
 
   if (isCreatePlanSuccess) {
+    resetPlan();
     navigate("/planner");
   }
 
@@ -88,6 +93,7 @@ const SavePlanDetail = () => {
       >
         <Box
           onClick={() => {
+            resetPlan();
             navigate(-1);
           }}
           cursor="pointer"
@@ -141,7 +147,7 @@ const SavePlanDetail = () => {
           Save
         </Button>
       </Flex>
-      <Box maxW="1000px" mx="auto" mt="20px" px={{ base: "20px", md: 0 }}>
+      <Box maxW="1000px" mx="auto" mt="20px" px={{ base: "20px", lg: 0 }}>
         <Button
           bgColor="tripl-new.orange"
           color="tripl-new.light"

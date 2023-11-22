@@ -15,5 +15,9 @@ export const usePlanLocations = () => {
     setLocations(temp);
   };
 
-  return { locations, setLocations, addNewLocation, deleteLocationById };
+  const reset = () => {
+    setLocations([]);
+  };
+
+  return { locations, setLocations, addNewLocation, deleteLocationById, reset };
 };

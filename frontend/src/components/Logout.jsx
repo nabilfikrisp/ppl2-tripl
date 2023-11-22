@@ -6,6 +6,7 @@ const Logout = () => {
   const { logout } = useAuth();
   return (
     <Button
+      w="full"
       bgColor="tripl-new.orange"
       color="tripl-new.light"
       transitionDuration="0.2s"

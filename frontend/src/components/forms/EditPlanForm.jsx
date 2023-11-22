@@ -1,4 +1,3 @@
-import { SmallAddIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
@@ -21,7 +20,6 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
 import { z } from "zod";
 
 const createPlanSchema = z.object({
@@ -30,7 +28,7 @@ const createPlanSchema = z.object({
   description: z.string(),
 });
 
-const CreatePlanForm = ({ isOpen, onClose }) => {
+const EditPlanForm = ({ isOpen, onClose, setDetail }) => {
   const {
     handleSubmit,
     register,
@@ -38,14 +36,10 @@ const CreatePlanForm = ({ isOpen, onClose }) => {
   } = useForm({
     resolver: zodResolver(createPlanSchema),
   });
-  const navigate = useNavigate();
 
   const onSubmit = (data) => {
-    navigate("create", {
-      state: {
-        data,
-      },
-    });
+    setDetail(data);
+    onClose();
   };
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="xl" isCentered>
@@ -62,7 +56,7 @@ const CreatePlanForm = ({ isOpen, onClose }) => {
               color="tripl-new.orange"
               mb="20px"
             >
-              PLANNER BARU
+              Edit Plan
             </Text>
             <form onSubmit={handleSubmit(onSubmit)}>
               <VStack gap="20px">
@@ -154,8 +148,7 @@ const CreatePlanForm = ({ isOpen, onClose }) => {
                     transitionTimingFunction: "ease-in-out",
                   }}
                 >
-                  <SmallAddIcon me="5px" />
-                  Tambah
+                  Edit
                 </Button>
               </VStack>
             </form>
@@ -168,4 +161,4 @@ const CreatePlanForm = ({ isOpen, onClose }) => {
   );
 };
 
-export default CreatePlanForm;
+export default EditPlanForm;
