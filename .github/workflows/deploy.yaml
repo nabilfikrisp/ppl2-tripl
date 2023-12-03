@@ -23,4 +23,4 @@ jobs:
       - name: Change directory to backend and install dependencies
         run: npm install
       - uses: superfly/flyctl-actions/setup-flyctl@master
-        run: flyctl deploy --remote-onlygi
+        run: flyctl deploy --remote-only
