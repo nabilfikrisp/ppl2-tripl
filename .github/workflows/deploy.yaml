@@ -11,7 +11,7 @@ env:
 jobs:
   deploy:
     name: TRIPL APP
-    runs-on: ubtuntu-latest
+    runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ./backend
