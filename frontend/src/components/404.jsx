@@ -1,4 +1,4 @@
-import { Button, Flex, Text } from "@chakra-ui/react";
+import { Button, Flex, Image } from "@chakra-ui/react";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -8,12 +8,15 @@ const Unknown404 = () => {
   return (
     <Flex
       fontSize="8xl"
-      h="60vh"
+      h="100vh"
+      w="100vw"
       justifyContent="center"
       alignItems="center"
       flexDir="column"
+      gap="50px"
+      position="relative"
     >
-      <Text fontWeight="bold">404</Text>
+      <Image src="/404.svg" />
       <Button
         onClick={() => navigate(-1)}
         bgColor="tripl-new.orange"

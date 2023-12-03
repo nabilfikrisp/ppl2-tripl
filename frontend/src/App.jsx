@@ -7,7 +7,6 @@ import {
 } from "react-router-dom";
 import RootLayout from "./layouts/RootLayout";
 import Home from "./routes/Home";
-import Test from "./routes/Test";
 import SignUp from "./routes/SignUp";
 import SignIn from "./routes/SignIn";
 import Explore from "./routes/Explore";
@@ -22,18 +21,22 @@ import { LocationsContextProvider } from "./context/LocationsContext";
 import { ModalProvider } from "./context/ModalContext";
 import PlanDetail from "./routes/PlanDetail";
 import MyProfile from "./routes/MyProfile";
+import ForgotPassword from "./routes/ForgotPassword";
+import ResetPassword from "./routes/ResetPassword";
+import Unknown404 from "./components/404";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route>
+    <Route errorElement={<Unknown404 />}>
       {/* WITH LAYOUT */}
       <Route element={<RootLayout />}>
         <Route index element={<Home />} />
-        <Route path="about" element={<Test />} />
         <Route path="my-profile" element={<MyProfile />} />
         <Route element={<IsNotLoggedIn />}>
           <Route path="sign-in" element={<SignIn />} />
           <Route path="sign-up" element={<SignUp />} />
+          <Route path="forgot-password" element={<ForgotPassword />} />
+          <Route path="reset/:token" element={<ResetPassword />} />
         </Route>
         <Route path="explore">
           <Route index element={<Explore />} />

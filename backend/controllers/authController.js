@@ -3,12 +3,26 @@ const bcrypt = require('bcryptjs');
 const { OAuth2Client } = require('google-auth-library');
 const passGenerator = require('generate-password');
 const axios = require('axios');
+const nodemailer = require('nodemailer');
 const User = require('../models/user');
 const {
   JWT_SECRET,
   GOOGLE_CLIENT_ID,
   GOOGLE_CLIENT_SECRET,
+  GMAIL_APP_PASSWORD,
+  FRONTEND_ENDPOINT,
 } = require('../utils/config');
+const PasswordReset = require('../models/passwordReset');
+
+const EMAIL_TRANSPORTER = 'mnabilfikrisp@gmail.com';
+
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: EMAIL_TRANSPORTER,
+    pass: GMAIL_APP_PASSWORD,
+  },
+});
 
 const oAuth2Client = new OAuth2Client(
   process.env.CLIENT_ID,
@@ -145,4 +159,54 @@ const loginByGoogle = async (request, response) => {
   }
 };
 
-module.exports = { login, register, loginByGoogle };
+const passwordReset = async (request, response) => {
+  const { email } = request.body;
+  const token = Math.random().toString(20).substring(2, 12);
+
+  const passwordResetQuery = new PasswordReset({
+    email,
+    token,
+  });
+
+  await passwordResetQuery.save();
+
+  const url = `${FRONTEND_ENDPOINT}/reset/${token}`;
+
+  await transporter.sendMail({
+    from: EMAIL_TRANSPORTER,
+    to: email,
+    subject: 'TRIPL Reset Password',
+    html: `Click <a href="${url}">here</a> to reset your password`,
+  });
+
+  return response.status(200).send({
+    message: 'Check you email',
+  });
+};
+
+const handleResetPassword = async (request, response) => {
+  const { token, password } = request.body;
+
+  const { email } = await PasswordReset.findOne({ token });
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    return response.status(404).send({ message: 'User not registered' });
+  }
+
+  const saltRounds = 10;
+  const passwordHash = await bcrypt.hash(password, saltRounds);
+
+  user.passwordHash = passwordHash;
+  user.save();
+
+  return response.send({ message: 'Your password successfully updated' });
+};
+
+module.exports = {
+  login,
+  register,
+  loginByGoogle,
+  passwordReset,
+  handleResetPassword,
+};
