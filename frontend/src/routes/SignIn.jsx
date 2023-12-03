@@ -16,6 +16,7 @@ import {
   Link as ChakraLink,
   HStack,
   Divider,
+  Flex,
 } from "@chakra-ui/react";
 import React from "react";
 import { useForm } from "react-hook-form";
@@ -172,11 +173,20 @@ const SignUp = () => {
                     )}
                   </InputRightElement>
                 </InputGroup>
+                <Flex justifyContent="end" pt="10px">
+                  <ChakraLink
+                    as={Link}
+                    to="/forgot-password"
+                    color="tripl-new.orange"
+                    fontSize="sm"
+                  >
+                    Forgot Password
+                  </ChakraLink>
+                </Flex>
                 <FormErrorMessage>
                   {errors.password && errors.password.message}
                 </FormErrorMessage>
               </FormControl>
-
               <Button
                 bgColor="tripl-new.orange"
                 color="tripl-new.light"
@@ -189,19 +199,13 @@ const SignUp = () => {
                   transitionTimingFunction: "ease-in-out",
                 }}
                 borderRadius="50px"
-                mt="25px"
                 w="full"
                 isLoading={isSubmitting}
                 type="submit"
               >
                 Sign In
               </Button>
-              <Text color="tripl-new.black">
-                Doesn't have an account?{" "}
-                <ChakraLink as={Link} to="/sign-up" color="tripl-new.orange">
-                  Sign Up
-                </ChakraLink>
-              </Text>
+
               <HStack width="full">
                 <Divider border="1px" borderRadius={"2xl"} />
                 <Text color="tripl-new.black">or</Text>
@@ -231,6 +235,12 @@ const SignUp = () => {
                 </Box>
                 Sign In with Google
               </Button>
+              <Text color="tripl-new.black">
+                Don't have account?{" "}
+                <ChakraLink as={Link} to="/sign-up" color="tripl-new.orange">
+                  Sign Up
+                </ChakraLink>
+              </Text>
             </VStack>
           </form>
         </Box>

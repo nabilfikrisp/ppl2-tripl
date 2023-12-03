@@ -9,6 +9,8 @@ const MyButton = ({
   width = "full",
   isDisabled = false,
   size = "md",
+  isLoading = false,
+  type = "button",
 }) => {
   const isOutline = variant === "outline";
 
@@ -30,6 +32,8 @@ const MyButton = ({
       onClick={onClick}
       isDisabled={isDisabled}
       size={size}
+      type={type}
+      isLoading={isLoading}
     >
       {children}
     </Button>
