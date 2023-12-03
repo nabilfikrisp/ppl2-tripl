@@ -26,9 +26,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import axios from "axios";
 import { BASE_ENDPOINT } from "../api";
-import useAlert from "../components/hooks/useAlert";
+import useAlert from "../hooks/useAlert";
 import { useGoogleLogin } from "@react-oauth/google";
-import { useAuth } from "../components/hooks/useAuth";
+import { useAuth } from "../hooks/useAuth";
 
 const signUpSchema = z
   .object({
@@ -264,12 +264,6 @@ const SignUp = () => {
               >
                 Sign Up
               </Button>
-              <Text color="tripl-new.black">
-                Already have an account?{" "}
-                <ChakraLink as={Link} to="/sign-in" color="tripl-new.orange">
-                  Sign In
-                </ChakraLink>
-              </Text>
               <HStack width="full">
                 <Divider border="1px" borderRadius={"2xl"} />
                 <Text color="tripl-new.black">or</Text>
@@ -299,6 +293,12 @@ const SignUp = () => {
                 </Box>
                 Sign In with Google
               </Button>
+              <Text color="tripl-new.black">
+                Already have an account?{" "}
+                <ChakraLink as={Link} to="/sign-in" color="tripl-new.orange">
+                  Sign In
+                </ChakraLink>
+              </Text>
             </VStack>
           </form>
         </Box>

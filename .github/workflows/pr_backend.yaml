@@ -1,6 +1,7 @@
 name: Backend Tests on Pull Request
 on:
   pull_request:
+    types: [opened, reopened, edited]
     paths:
       - "backend/**"
     branches:
@@ -9,21 +10,27 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./backend
+    env:
+      PORT: 3000
+      MONGODB_URI: ${{ secrets.MONGODB_URI }}
+      MONGODB_URI_TEST: ${{ secrets.MONGODB_URI_TEST }}
+      MONGODB_URI_UNIT_TEST: ${{ secrets.MONGODB_URI_UNIT_TEST }}
+      SECRET: ${{ secrets.JWT_SECRET }}
+      GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+      GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
 
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v3
         with:
-          node-version: "16"
+          node-version: "18"
       - name: Change directory to backend and install dependencies
-        run: |
-          cd backend
-          npm install
+        run: npm install
       - name: Check style with ESLint
-        run: |
-          cd backend
-          npm run eslint
+        run: npm run lint
       - name: Run tests
-        run: |
-          cd backend
-          npm run test
+        run: npm run test
+        timeout-minutes: 10

@@ -1,6 +1,5 @@
-const bcrypt = require('bcryptjs');
-const User = require('../models/user');
 const mongoose = require('mongoose');
+const User = require('../models/user');
 
 const getAll = async (request, response) => {
   const { includePlans } = request.query;
@@ -36,4 +35,11 @@ const detail = async (request, response) => {
   }
 };
 
-module.exports = { getAll, detail };
+const myDetail = async (request, response) => {
+  const user = request.user;
+  const userQuery = User.findById(user.id);
+  const userData = await userQuery.exec();
+  return response.status(200).json(userData);
+};
+
+module.exports = { getAll, detail, myDetail };

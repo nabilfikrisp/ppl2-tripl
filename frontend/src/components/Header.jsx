@@ -7,11 +7,14 @@ import {
   useBoolean,
   VStack,
   StackDivider,
+  Divider,
 } from "@chakra-ui/react";
 import { Link, NavLink } from "react-router-dom";
 import React from "react";
 import { CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
-import { useAuth } from "./hooks/useAuth";
+import { useAuth } from "../hooks/useAuth";
+import MyButton from "./MyButton";
+import MyProfileMenu from "./MyProfileMenu";
 import Logout from "./Logout";
 
 const data = [
@@ -80,45 +83,17 @@ export default function Header() {
           {user === null && (
             <>
               <Link to={"/sign-in"}>
-                <Button
-                  bgColor="tripl-new.orange"
-                  color="tripl-new.light"
-                  transitionDuration="0.2s"
-                  boxShadow="lg"
-                  transitionTimingFunction="ease-in-out"
-                  _hover={{
-                    transform: "translateY(10%)",
-                    transitionDuration: "0.2s",
-                    transitionTimingFunction: "ease-in-out",
-                  }}
-                >
-                  Sign In
-                </Button>
+                <MyButton>Sign In</MyButton>
               </Link>
 
               <Link to={"/sign-up"}>
-                <Button
-                  border="1px solid"
-                  bgColor="tripl-new.light"
-                  color="tripl-new.orange"
-                  boxShadow="lg"
-                  transitionDuration="0.2s"
-                  transitionTimingFunction="ease-in-out"
-                  _hover={{
-                    transform: "translateY(10%)",
-                    transitionDuration: "0.2s",
-                    transitionTimingFunction: "ease-in-out",
-                  }}
-                >
-                  Sign Up
-                </Button>
+                <MyButton variant="outline">Sign Up</MyButton>
               </Link>
             </>
           )}
           {user !== null && (
             <>
-              <Text fontWeight="700">Hi, {user.name}!</Text>
-              <Logout />
+              <MyProfileMenu username={user.name} />
             </>
           )}
         </HStack>
@@ -163,72 +138,82 @@ export default function Header() {
               }}
             />
           </Box>
-          <VStack
-            style={{
-              position: "absolute",
-              right: "0",
-              top: isDrawerOpen ? "60px" : "-1000px",
-              transition: "all .2s",
-            }}
-            bgColor="tripl.green-200"
-            pt={5}
-            pb={3}
-            px={8}
-            width="200px"
-            borderBottomRadius={10}
-            boxShadow="xl"
-            divider={<StackDivider borderColor="tripl.dark" />}
-          >
-            {data.map((item, i) => (
-              <NavLink key={i} to={item.href}>
-                <Button
-                  variant="nav"
-                  fontWeight="700"
-                  transitionDuration="0.2s"
-                  transitionTimingFunction="ease-in-out"
-                  _hover={{
-                    transform: "translateY(10%)",
-                    transitionDuration: "0.2s",
-                    transitionTimingFunction: "ease-in-out",
-                  }}
-                >
-                  {item.label}
-                </Button>
-              </NavLink>
-            ))}
-            <Link to={"/sign-in"}>
-              <Button
-                variant="nav"
-                transitionDuration="0.2s"
-                fontWeight="700"
-                transitionTimingFunction="ease-in-out"
-                _hover={{
-                  transform: "translateY(10%)",
-                  transitionDuration: "0.2s",
-                  transitionTimingFunction: "ease-in-out",
-                }}
-              >
-                Login
-              </Button>
-            </Link>
-            <Link to={"/sign-up"}>
-              <Button
-                variant="nav"
-                transitionDuration="0.2s"
-                fontWeight="700"
-                transitionTimingFunction="ease-in-out"
-                _hover={{
-                  transform: "translateY(10%)",
-                  transitionDuration: "0.2s",
-                  transitionTimingFunction: "ease-in-out",
-                }}
-              >
-                Sign Up
-              </Button>
-            </Link>
-          </VStack>
+          <MobileNav isDrawerOpen={isDrawerOpen} user={user} />
         </Box>
       </Flex>
     </Box>
   );
 }
+
+const MobileNav = ({ isDrawerOpen, user }) => {
+  return (
+    <VStack
+      style={{
+        position: "absolute",
+        right: "0",
+        top: isDrawerOpen ? "60px" : "-1000px",
+        transition: "all .2s",
+      }}
+      bgColor="tripl-new.light"
+      pt={5}
+      pb={3}
+      px={8}
+      width="200px"
+      borderBottomRadius={10}
+      boxShadow="xl"
+      divider={<StackDivider borderColor="tripl.dark" />}
+      alignItems="start"
+    >
+      {data.map((item, i) => (
+        <NavLink key={i} to={item.href}>
+          <Button
+            variant="nav"
+            fontWeight="700"
+            transitionDuration="0.2s"
+            transitionTimingFunction="ease-in-out"
+            _hover={{
+              transform: "translateY(10%)",
+              transitionDuration: "0.2s",
+              transitionTimingFunction: "ease-in-out",
+            }}
+          >
+            {item.label}
+          </Button>
+        </NavLink>
+      ))}
+      {user === null ? (
+        <>
+          <Box as={Link} to={"/sign-in"} w="full" py="10px">
+            <MyButton>Sign In</MyButton>
+          </Box>
+          <Divider borderColor="tripl.dark" />
+          <Box as={Link} to={"/sign-up"} w="full" py="10px">
+            <MyButton variant="outline">Sign Up</MyButton>
+          </Box>
+        </>
+      ) : (
+        <>
+          <Link to={"/my-profile"}>
+            <Button
+              variant="nav"
+              transitionDuration="0.2s"
+              fontWeight="700"
+              transitionTimingFunction="ease-in-out"
+              _hover={{
+                transform: "translateY(10%)",
+                transitionDuration: "0.2s",
+                transitionTimingFunction: "ease-in-out",
+              }}
+            >
+              My Profile
+            </Button>
+          </Link>
+          <Divider borderColor="tripl.dark" />
+          <Box w="full" pt="10px" pb="5px">
+            <Logout />
+          </Box>
+        </>
+      )}
+    </VStack>
+  );
+};

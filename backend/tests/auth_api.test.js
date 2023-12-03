@@ -2,8 +2,16 @@ const mongoose = require('mongoose');
 const supertest = require('supertest');
 const User = require('../models/user');
 const app = require('../app');
+const { MONGODB_URI } = require('../utils/config');
 
 const api = supertest(app);
+
+beforeAll(() => {
+  mongoose.connect(MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
+});
 
 describe('Authentication API', () => {
   test('register a user', async () => {

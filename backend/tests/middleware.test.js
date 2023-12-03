@@ -1,13 +1,14 @@
+const jwt = require('jsonwebtoken');
 const {
   errorHandler,
   tokenExtractor,
   userExtractor,
 } = require('../utils/middleware');
 
-const jwt = require('jsonwebtoken');
 jest.mock('jsonwebtoken');
 
 const User = require('../models/user');
+
 jest.mock('../models/user');
 
 describe('Middleware', () => {

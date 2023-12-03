@@ -1,13 +1,21 @@
 const mongoose = require('mongoose');
 const supertest = require('supertest');
 const app = require('../app');
+const { MONGODB_URI } = require('../utils/config');
 
 const api = supertest(app);
+
+beforeAll(() => {
+  mongoose.connect(MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
+});
 
 describe('Locations API', () => {
   test('returns locations as JSON', async () => {
     await api
-      .get('/api/locations')
+      .get('/api/locations?pageSize=20')
       .expect(200)
       .expect('Content-Type', /application\/json/);
   });

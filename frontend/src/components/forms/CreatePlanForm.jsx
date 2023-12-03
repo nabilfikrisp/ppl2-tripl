@@ -25,8 +25,8 @@ import { useNavigate } from "react-router-dom";
 import { z } from "zod";
 
 const createPlanSchema = z.object({
-  title: z.string().nonempty(),
-  date: z.string().nonempty(),
+  title: z.string().min(1, "Title is required"),
+  date: z.string().min(1, "Please select date time"),
   description: z.string(),
 });
 
@@ -41,7 +41,6 @@ const CreatePlanForm = ({ isOpen, onClose }) => {
   const navigate = useNavigate();
 
   const onSubmit = (data) => {
-    console.log(data, "SUBMIT");
     navigate("create", {
       state: {
         data,
