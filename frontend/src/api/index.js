@@ -1,1 +1,3 @@
-export const BASE_ENDPOINT = "http://localhost:3000/api";
+import { BACKEND_ENDPOINT } from "../helper/config";
+
+export const BASE_ENDPOINT = BACKEND_ENDPOINT;
