@@ -18,7 +18,7 @@ const Explore = () => {
     hasNextPage,
     error,
     handleSearch,
-  } = useLocationAPI();
+  } = useLocationAPI({ pageSize: 10 });
 
   return (
     <Flex width="full" flexDir="column" minHeight="65vh" height="full">
