@@ -1,14 +1,19 @@
 require('dotenv').config();
 
 const { PORT } = process.env;
+
+const SELECT_MONGO_URI = () => {
+  switch (process.env.NODE_ENV) {
+    case 'test':
+      return process.env.MONGODB_URI_UNIT_TEST;
+    case 'development':
+      return process.env.MONGODB_URI_TEST;
+    default:
+      return process.env.MONGODB_URI;
+  }
+};
 // istanbul ignore next: This line is excluded from test coverage
-const MONGODB_URI =
-  // eslint-disable-next-line no-nested-ternary
-  process.env.NODE_ENV === 'test'
-    ? process.env.MONGODB_URI_UNIT_TEST
-    : process.env.NODE_ENV === 'development'
-    ? process.env.MONGODB_URI_TEST
-    : process.env.MONGODB_URI;
+const MONGODB_URI = SELECT_MONGO_URI();
 
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
