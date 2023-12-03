@@ -1,0 +1,26 @@
+name: Backend deploy on fly.io
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
+jobs:
+  deploy:
+    name: TRIPL APP
+    runs-on: ubtuntu-latest
+    defaults:
+      run:
+        working-directory: ./backend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+      - name: Change directory to backend and install dependencies
+        run: npm install
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+        run: flyctl deploy --remote-onlygi
