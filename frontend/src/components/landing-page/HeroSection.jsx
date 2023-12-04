@@ -7,7 +7,7 @@ const HeroSection = () => {
       as="section"
       id="hero-section"
       width="full"
-      color="tripl.dark"
+      color="tripl-new.black"
       marginX="auto"
       templateColumns={{ base: "1fr", xl: "1fr 1fr" }}
       gap="20px"
@@ -32,13 +32,14 @@ const HeroSection = () => {
           lineHeight="110%"
           color="tripl-new.orange"
           maxWidth="1000px"
+          mt = "30"
         >
           Plan It, Live It, Love It: Your Journey, Our Planner
         </Text>
         <Text
-          fontSize={{ base: "35px", xl: "50px" }}
+          fontSize={{ base: "20px", xl: "35px" }}
           as="h2"
-          fontWeight="600"
+          fontWeight="400"
           lineHeight="110%"
           maxWidth="1000px"
         >
@@ -54,7 +55,7 @@ const HeroSection = () => {
         alignItems="center"
       >
         <Image
-          src="/home-hero.png"
+          src="/bandoeng.jpg"
           w="full"
           aspectRatio="4/3"
           height="fit-content"

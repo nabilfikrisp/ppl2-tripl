@@ -12,7 +12,7 @@ const ProductSection = () => {
       px={{ base: "20px", md: "50px", xl: "150px" }}
     >
       <Text
-        color="tripl-new.gray-300"
+        color="tripl-new.gray-200"
         fontWeight="bold"
         fontSize="40px"
         textAlign="center"
@@ -47,7 +47,7 @@ const ProductSection = () => {
             <Text fontSize="35px" color="tripl-new.orange" fontWeight="bold">
               Explore
             </Text>
-            <Text fontSize="24px">
+            <Text color="tripl-new.black" fontSize="24px">
               Telusuri berbagai destinasi wisata menarik. Temukan tujuan
               perjalanan masa depan Anda sesuai minat dan preferensi.
             </Text>
@@ -84,7 +84,7 @@ const ProductSection = () => {
             >
               Planner
             </Text>
-            <Text fontSize="24px" textAlign="end">
+            <Text fontSize="24px" color="tripl-new.black" textAlign="end">
               Atur rencana harian Anda dengan detail. Ketahui waktu yang tepat
               untuk mengunjungi atraksi, restoran, dan aktivitas lainnya.
             </Text>

@@ -108,7 +108,7 @@ const SignUp = () => {
           paddingY="80px"
           textColor="tripl-new.orange"
           border="1px solid"
-          borderColor="tripl-new.gray-100"
+          borderColor="tripl.white"
           boxShadow="xl"
         >
           <Text as="h1" fontSize="3xl" textAlign="center">

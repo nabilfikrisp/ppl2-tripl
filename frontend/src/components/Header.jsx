@@ -42,8 +42,10 @@ export default function Header() {
         align="center"
         justify="space-between"
         backgroundColor="tripl-new.light"
-        textColor="tripl.dark"
-        boxShadow="lg"
+        textColor="tripl-new.gray-200"
+        // boxShadow="lg"
+        borderBottom="2px solid"
+        borderColor="tripl.white"
       >
         <Link to="/">
           <Text
@@ -83,11 +85,11 @@ export default function Header() {
           {user === null && (
             <>
               <Link to={"/sign-in"}>
-                <MyButton>Sign In</MyButton>
+                <MyButton variant="outline">Sign In</MyButton>
               </Link>
 
               <Link to={"/sign-up"}>
-                <MyButton variant="outline">Sign Up</MyButton>
+                <MyButton>Sign Up</MyButton>
               </Link>
             </>
           )}
@@ -184,11 +186,11 @@ const MobileNav = ({ isDrawerOpen, user }) => {
       {user === null ? (
         <>
           <Box as={Link} to={"/sign-in"} w="full" py="10px">
-            <MyButton>Sign In</MyButton>
+            <MyButton variant="outline">Sign In</MyButton>
           </Box>
           <Divider borderColor="tripl.dark" />
           <Box as={Link} to={"/sign-up"} w="full" py="10px">
-            <MyButton variant="outline">Sign Up</MyButton>
+            <MyButton>Sign Up</MyButton>
           </Box>
         </>
       ) : (

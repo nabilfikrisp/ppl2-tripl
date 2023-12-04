@@ -18,6 +18,7 @@ const colors = {
     "green-400": "#46af4e",
     "green-500": "#1a4236",
     dark: "#002c1f",
+    white : "#ffffff",
   },
   "tripl-new": {
     light: "#EAEAEA",
@@ -25,8 +26,8 @@ const colors = {
     cream: "#E8DAB2",
     "gray-200": "#4F6D7A",
     "gray-100": "#C0D6DF",
-    "gray-300": "#3C474B",
-    black: "#162521",
+    "gray-300": "#162521",
+    black: "#3C474B",
   },
 };
 

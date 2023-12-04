@@ -19,6 +19,7 @@ const MyProfileMenu = ({ username }) => {
         as={Button}
         rightIcon={<ChevronDownIcon />}
         fontWeight="700"
+        textColor="tripl-new.gray-200"
         bg="transparent"
         _active={{ bg: "transparent" }}
         _hover={{ bg: "transparent" }}
