@@ -61,8 +61,9 @@ const ExploreDetail = () => {
           >
             <Image
               src={data.photo}
-              boxShadow="xl"
               h={{ base: "fit-content", md: "full" }}
+              fallbackSrc="/img_fallback.webp"
+              fallbackStrategy="onError"
             />
           </Flex>
           <Flex
@@ -140,7 +141,7 @@ const ExploreDetail = () => {
                 Telusuri Maps
               </Text>
               <Box
-                height={{ base: "300px", sm: "450px", md:"600px" }}
+                height={{ base: "300px", sm: "450px", md: "600px" }}
                 overflow="hidden"
                 borderRadius="20px"
               >

@@ -10,8 +10,8 @@ const Footer = () => {
         backgroundColor="tripl-new.light"
         textColor="tripl-new.black"
         px={{ base: "30px", md: "100px" }}
-        borderTop="1px solid"
-        borderColor="tripl-new.gray-100"
+        borderTop="2px solid"
+        borderColor="tripl.white"
         py="50px"
         flexDir="column"
         gap="20px"

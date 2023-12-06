@@ -6,7 +6,7 @@ const SearchInput = ({ onChange }) => {
   return (
     <Flex w="full" gap="20px">
       <Input
-        placeholder="search for a place.."
+        placeholder="Telusuri destinasi..."
         bgColor="tripl-new.gray-100"
         focusBorderColor="tripl-new.orange"
         _placeholder={{
