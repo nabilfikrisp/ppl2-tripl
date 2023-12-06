@@ -37,9 +37,9 @@ const HeroSection = () => {
           Plan It, Live It, Love It: Your Journey, Our Planner
         </Text>
         <Text
-          fontSize={{ base: "20px", xl: "35px" }}
+          fontSize={{ base: "30px", xl: "40px" }}
           as="h2"
-          fontWeight="400"
+          fontWeight="500"
           lineHeight="110%"
           maxWidth="1000px"
         >

@@ -51,7 +51,7 @@ const PlanCard = ({ data }) => {
           src={data.locations[0].location.photo}
           height="full"
           w="full"
-          fallbackSrc="img_fallback.jpg"
+          fallbackSrc="img_fallback.webp"
           fallbackStrategy="onError"
           referrerPolicy="no-referrer"
           objectFit="cover"

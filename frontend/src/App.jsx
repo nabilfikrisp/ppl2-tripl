@@ -11,7 +11,7 @@ import SignUp from "./routes/SignUp";
 import SignIn from "./routes/SignIn";
 import Explore from "./routes/Explore";
 import AboutUs from "./routes/AboutUs";
-// import Faq from "./routes/Faq";
+import Faq from "./routes/Faq";
 import ExploreDetail from "./routes/ExploreDetail";
 import Planner from "./routes/Planner";
 import SavePlanDetail from "./components/forms/SavePlanDetail";

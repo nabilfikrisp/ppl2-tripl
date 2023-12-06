@@ -16,7 +16,6 @@ const MyButton = ({
 
   return (
     <Button
-     borderRadius="full" 
       border={isOutline ? "1px solid" : ""}
       bgColor={isOutline ? "tripl-new.light" : "tripl-new.orange"}
       color={isOutline ? "tripl-new.orange" : "tripl-new.light"}
