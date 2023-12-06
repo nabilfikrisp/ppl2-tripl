@@ -261,7 +261,7 @@ const PlanDetail = () => {
                       src={locationPlan.location.photo}
                       height="full"
                       w="full"
-                      fallbackSrc="/img_fallback.jpg"
+                      fallbackSrc="/img_fallback.webp"
                       fallbackStrategy="onError"
                       referrerPolicy="no-referrer"
                       objectFit="cover"
