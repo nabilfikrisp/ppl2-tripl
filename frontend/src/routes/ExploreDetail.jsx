@@ -15,10 +15,32 @@ import Unknown404 from "../components/404";
 import Ratings from "../components/Ratings";
 import { capitalize } from "lodash";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
+import { Icon } from "leaflet";
 
 const ExploreDetail = () => {
   const params = useParams();
   const locationId = params.id;
+
+  const icons = {
+    wisata: new Icon({
+      iconUrl: "/wisata-icon.svg",
+      iconSize: [35, 35],
+      iconAnchor: [22, 94],
+      popupAnchor: [-3, -76],
+    }),
+    hotel: new Icon({
+      iconUrl: "/hotel-icon.svg",
+      iconSize: [35, 35],
+      iconAnchor: [22, 94],
+      popupAnchor: [-3, -76],
+    }),
+    restoran: new Icon({
+      iconUrl: "/restoran-icon.svg",
+      iconSize: [35, 35],
+      iconAnchor: [22, 94],
+      popupAnchor: [-3, -76],
+    }),
+  };
 
   const fetchDetail = async (id) => {
     try {
@@ -160,6 +182,7 @@ const ExploreDetail = () => {
                   />
                   <Marker
                     position={{ lat: data.latitude, lng: data.longitude }}
+                    icon={icons[data.type]}
                   >
                     <Popup>
                       <Text fontWeight="bold" fontSize="lg">
@@ -179,7 +202,7 @@ const ExploreDetail = () => {
                         style={{ color: "#EAEAEA" }}
                         isExternal
                         href={data.placeLink}
-                        w="fit-content"
+                        w="full"
                       >
                         Lihat di Google
                       </Button>
