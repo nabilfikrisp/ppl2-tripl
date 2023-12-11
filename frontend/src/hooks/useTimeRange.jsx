@@ -2,13 +2,15 @@ import { Box, Flex, Select } from "@chakra-ui/react";
 import { useState } from "react";
 
 export const useTimeRange = () => {
+  const [initialTime, setInitialTime] = useState(0);
   const [startHour, setStartHour] = useState("");
   const [endHour, setEndHour] = useState("");
   const [timeRange, setTimeRange] = useState("");
 
   const hours = Array.from(
-    { length: 24 },
-    (_, index) => `${index < 10 ? "0" : ""}${index}:00`
+    { length: 24 - initialTime },
+    (_, index) =>
+      `${index + initialTime < 10 ? "0" : ""}${index + initialTime}:00`
   );
 
   const handleStartHourChange = (event) => {
@@ -60,5 +62,5 @@ export const useTimeRange = () => {
     );
   };
 
-  return { renderTimeRange, timeRange };
+  return { renderTimeRange, timeRange, setInitialTime };
 };

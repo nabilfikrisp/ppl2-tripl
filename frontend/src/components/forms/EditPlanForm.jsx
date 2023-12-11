@@ -28,13 +28,23 @@ const createPlanSchema = z.object({
   description: z.string(),
 });
 
-const EditPlanForm = ({ isOpen, onClose, setDetail }) => {
+const EditPlanForm = ({
+  isOpen,
+  onClose,
+  setDetail,
+  initialValues = {
+    title: "",
+    date: "",
+    description: "",
+  },
+}) => {
   const {
     handleSubmit,
     register,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(createPlanSchema),
+    defaultValues: initialValues,
   });
 
   const onSubmit = (data) => {

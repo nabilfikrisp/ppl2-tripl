@@ -94,7 +94,7 @@ const SavePlanDetail = () => {
         <Box
           onClick={() => {
             resetPlan();
-            navigate(-1);
+            navigate("/plannerasdasd");
           }}
           cursor="pointer"
           color="tripl-new.orange"
