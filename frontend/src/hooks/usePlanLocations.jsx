@@ -20,6 +20,9 @@ export const usePlanLocations = () => {
   };
 
   const getLastTime = () => {
+    if (locations.length < 1) {
+      return 0;
+    }
     const lastTime = locations[locations.length - 1]?.timeRange || "00:00"; // Default to "00:00" if locations is empty
     const [, endTime] = lastTime.split(" - ");
     const numericHour = parseInt(endTime.split(":")[0], 10);
