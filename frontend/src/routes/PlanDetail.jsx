@@ -121,7 +121,7 @@ const PlanDetail = () => {
         <Box
           onClick={() => {
             resetPlan();
-            navigate(-1);
+            navigate("/planner");
           }}
           cursor="pointer"
           color="tripl-new.orange"

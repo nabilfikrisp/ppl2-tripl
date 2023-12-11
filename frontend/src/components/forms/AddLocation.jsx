@@ -35,10 +35,15 @@ const SetViewOnClick = ({ coords }) => {
 
 const MyMarker = ({ selected, location }) => {
   const ref = useRef(null);
-  const { addNewLocation } = usePlanLocations();
-  const { timeRange, renderTimeRange } = useTimeRange();
+  const { addNewLocation, locations, getLastTime } = usePlanLocations();
+  const { timeRange, renderTimeRange, setInitialTime } = useTimeRange();
   const { isOpen, onOpen: openTimeRangeModal, onClose } = useDisclosure();
   const { hideModal } = useModal();
+  const isAdded = locations.find(
+    (addedLocation) => addedLocation.location.id === location.id
+  )
+    ? true
+    : false;
 
   const icons = {
     wisata: new Icon({
@@ -61,6 +66,10 @@ const MyMarker = ({ selected, location }) => {
     }),
   };
 
+  useEffect(() => {
+    setInitialTime(getLastTime());
+  }, []);
+  
   useEffect(() => {
     if (selected) {
       ref.current.openPopup();
@@ -101,10 +110,11 @@ const MyMarker = ({ selected, location }) => {
               openTimeRangeModal();
             }}
             size={{ base: "sm", md: "md" }}
+            isDisabled={isAdded}
           >
-            Add to Plan
+            {isAdded ? "Already on your plan" : "Add to Plan"}
           </MyButton>
-          <Modal isOpen={isOpen} onClose={onClose} size="lg" isCentered>
+          <Modal isOpen={isOpen} onClose={onClose} size="lg">
             <ModalOverlay />
             <ModalContent>
               <ModalHeader>Tentukan Jam Rencanamu</ModalHeader>
