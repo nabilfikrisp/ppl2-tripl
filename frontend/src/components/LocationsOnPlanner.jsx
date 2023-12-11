@@ -2,6 +2,7 @@ import { Box, Button, Flex, Image, Text } from "@chakra-ui/react";
 import React from "react";
 import MyButton from "./MyButton";
 import { AiFillStar } from "react-icons/ai";
+import { usePlanLocations } from "../hooks/usePlanLocations";
 
 const LocationsOnPlanner = ({
   isLoading,
@@ -14,6 +15,12 @@ const LocationsOnPlanner = ({
   setMapCenter,
   setSelectedLocationId,
 }) => {
+  const { locations } = usePlanLocations();
+  const isAdded = (id) =>
+    locations.find((addedLocation) => addedLocation.location.id === id)
+      ? true
+      : false;
+
   if (isLoading) {
     return <Box>Loading...</Box>;
   }
@@ -115,8 +122,11 @@ const LocationsOnPlanner = ({
                       }}
                       mt={{ md: "20px" }}
                       size={{ base: "sm", md: "md" }}
+                      isDisabled={isAdded(location.id)}
                     >
-                      Lihat di Map
+                      {isAdded(location.id)
+                        ? "Already on your plan"
+                        : "Lihat di Map"}
                     </MyButton>
                   </Flex>
                 </Flex>
