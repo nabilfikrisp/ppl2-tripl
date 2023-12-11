@@ -366,6 +366,11 @@ const PlanDetail = () => {
         isOpen={formIsOpen}
         onClose={formOnClose}
         setDetail={setPlanDesc}
+        initialValues={{
+          title: planDetail.title || "",
+          date: dayjs(planDetail.date).format("YYYY-MM-DD") || "",
+          description: planDetail.description || "",
+        }}
       />
     </Box>
   );
