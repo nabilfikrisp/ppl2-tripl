@@ -2,6 +2,7 @@ require('dotenv').config();
 
 const { PORT } = process.env;
 
+// istanbul ignore next: This line is excluded from test coverage
 const SELECT_MONGO_URI = () => {
   switch (process.env.NODE_ENV) {
     case 'test':
@@ -12,6 +13,7 @@ const SELECT_MONGO_URI = () => {
       return process.env.MONGODB_URI;
   }
 };
+
 // istanbul ignore next: This line is excluded from test coverage
 const MONGODB_URI = SELECT_MONGO_URI();
 
