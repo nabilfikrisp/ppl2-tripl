@@ -3,5 +3,9 @@ To run backend you must provide these key
 PORT=3000
 MONGODB_URI= <YOUR_MONGODB_URI>
 SECRET= <ANY_STRING>
+GOOGLE_CLIENT_ID=<GOOGLE_CLIENT_ID>
+GOOGLE_CLIENT_SECRET=<GOOGLE_CLIENT_ID>
+GMAIL_APP_PASSWORD=<GMAIL_APP_PASSWORD>
+FRONTEND_ENDPOINT=http://localhost:5173
 
-or you could just ask devs
+or kindly ask devs for help :)
