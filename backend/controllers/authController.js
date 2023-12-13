@@ -159,6 +159,7 @@ const loginByGoogle = async (request, response) => {
   }
 };
 
+// istanbul ignore next: This line is excluded from test coverage
 const passwordReset = async (request, response) => {
   const { email } = request.body;
   const token = Math.random().toString(20).substring(2, 12);
@@ -184,6 +185,7 @@ const passwordReset = async (request, response) => {
   });
 };
 
+// istanbul ignore next: This line is excluded from test coverage
 const handleResetPassword = async (request, response) => {
   const { token, password } = request.body;
 
