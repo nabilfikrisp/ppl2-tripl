@@ -1,7 +1,7 @@
-# Sprint 5
+# Sprint 6
 
 
-|Date|15 Oktober 2023|
+|Date|23 Oktober 2023|
 | :- | :- |
 |Created by|Laura Azra Aprilyanti|
 |Participant|Aulia Rahmanita, Anna Safira Dila, Laura Azra Aprilyanti, Muhammad Nabil Fikri|
@@ -11,7 +11,7 @@
 - FE - Profile akun
 - FE - Add planner
 - FE - Lupa kata sandi
-- Integrasi BE FE
+- Fullstack - Integrasi backend frontend
 - FE - Tentang Website
 
 ### Breakdown Task:
@@ -29,7 +29,7 @@
 
 #### Delivered:	6 SP
 ### During Sprint
-2023-10-22:
+2023-10-29:
 
 1. Feedback
 2. Blocker
